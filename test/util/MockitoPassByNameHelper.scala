@@ -57,13 +57,6 @@ object MockitoPassByNameHelper {
     */
   case class PassByNameVerifier[T](mockedInstance: T, methodName: String, params: Seq[PassByNameParam] = Seq.empty, maybeOngoingVerification: Option[T] = None) extends Builder {
 
-    private def initOngoingVerification: PassByNameVerifier[T] =
-      if (maybeOngoingVerification.isEmpty) {
-        this.copy(maybeOngoingVerification = Some(Mockito.verify(mockedInstance)))
-      } else {
-        this
-      }
-
     def withByNameParamMatcher[P](matcher: => P): Builder = {
       initOngoingVerification.copy(params = this.params :+ PassByNameParam(classOf[() => P], matcher))
     }
@@ -86,6 +79,13 @@ object MockitoPassByNameHelper {
       val method = mockedInstance.getClass.getMethod(methodName, params.map(param => param.clazz): _*)
       method.invoke(maybeOngoingVerification.get, params.map(param => param.paramMatcher.asInstanceOf[AnyRef]): _*)
     }
+
+    private def initOngoingVerification: PassByNameVerifier[T] =
+      if (maybeOngoingVerification.isEmpty) {
+        this.copy(maybeOngoingVerification = Some(Mockito.verify(mockedInstance)))
+      } else {
+        this
+      }
 
     private def byNameEqArgMatcher[P](compare: P) = new ArgumentMatcher[P] {
       override def matches(argument: P): Boolean =

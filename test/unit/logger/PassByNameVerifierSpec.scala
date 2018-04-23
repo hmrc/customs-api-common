@@ -38,7 +38,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
   }
 
   "PassByNameVerifier" can {
-    "In a scenario where we want to match name parameters using an EQ matcher" should {
+    "In a scenario where we want to match by name parameters using an EQ matcher" should {
       "verify String and Throwable pass by name parameters" in new SetUp {
         mockLogger.error("ERROR", expectedException)
 
@@ -61,26 +61,26 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
     }
 
     "In a scenario where we have both normal and by name parameters, PassByNameVerifier" should {
-      class OtherValue
+      class SomeClass
       class Foo {
-        def fooWithClass(otherValue: OtherValue, f: => Unit): Int = 1
+        def fooWithClass(someClass: SomeClass, f: => Unit): Int = 1
         def fooWithInt(someValue: Int, f: => Unit): Int = 1
         def fooWithString(someValue: Int, f: => String): Int = 1
       }
 
-      "verify ArgumentMatchers for a class and byname param" in {
+      "verify ArgumentMatchers for a class and by name param" in {
         val mockFoo = mock[Foo]
-        val value1 = new OtherValue
+        val someClass = new SomeClass
 
-        mockFoo.fooWithClass(value1, () => ())
+        mockFoo.fooWithClass(someClass, () => ())
 
         PassByNameVerifier(mockFoo, "fooWithClass")
-          .withParamMatcher(ameq(value1))
+          .withParamMatcher(ameq(someClass))
           .withByNameParamMatcher(any[() => Unit])
           .verify()
       }
 
-      "verify ArgumentMatchers for a primitive and any byname param" in {
+      "verify ArgumentMatchers for a primitive and any by name param" in {
         val mockFoo = mock[Foo]
 
         mockFoo.fooWithString(1, "X")
@@ -91,7 +91,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
           .verify()
       }
 
-      "verify ArgumentMatchers for a primitive and an EQ byname param" in {
+      "verify ArgumentMatchers for a primitive and an EQ by name param" in {
         val mockFoo = mock[Foo]
 
         mockFoo.fooWithString(1, "X")
@@ -102,7 +102,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
           .verify()
       }
 
-      "verify ArgumentMatchers a primitive and an EQ byname param using withByNameParamMatch" in {
+      "verify ArgumentMatchers a primitive and an EQ by name param using withByNameParamMatch" in {
         val mockFoo = mock[Foo]
 
         mockFoo.fooWithString(1, "X")
@@ -113,7 +113,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
           .verify()
       }
 
-      "verify ArgumentMatchers for a primitive and an EQ byname param using withByNameParam" in {
+      "verify ArgumentMatchers for a primitive and an EQ by name param using withByNameParam" in {
         val mockFoo = mock[Foo]
 
         mockFoo.fooWithString(1, "X")
