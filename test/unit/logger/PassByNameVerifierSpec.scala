@@ -16,6 +16,8 @@
 
 package unit.logger
 
+import org.mockito.{ArgumentMatcher, ArgumentMatchers}
+import org.mockito.ArgumentMatchers.{any, eq => ameq}
 import org.scalatest.Matchers
 import org.scalatest.mock.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,92 +32,162 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
   }
 
   private trait SetUp {
-    val mockLogger = mock[LoggerToMock]
-    val expectedException = new RuntimeException("expectedException")
-    val notExpectedException = new RuntimeException("notExpectedException")
+    val mockLogger: LoggerToMock = mock[LoggerToMock]
+    val expectedException: RuntimeException = new RuntimeException("expectedException")
+    val notExpectedException: RuntimeException = new RuntimeException("notExpectedException")
   }
 
   "PassByNameVerifier" can {
-    "in happy path" should {
+    "In a scenario where we want to match by name parameters using an EQ matcher" should {
       "verify String and Throwable pass by name parameters" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
-          .withByNameParam[String]("ERROR")
-          .withByNameParam[Throwable](expectedException)
-
         mockLogger.error("ERROR", expectedException)
 
-        passByName.verify()
+        PassByNameVerifier(mockLogger, "error")
+          .withByNameParam[String]("ERROR")
+          .withByNameParam[Throwable](expectedException)
+          .verify()
       }
 
       "verify String pass by name parameters and implicit Header Carrier" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
-          .withByNameParam[String]("ERROR")
-          .withAnyHeaderCarrierParam()
         implicit val hc = HeaderCarrier()
 
         mockLogger.error("ERROR")
 
-        passByName.verify()
+        PassByNameVerifier(mockLogger, "error")
+          .withByNameParam[String]("ERROR")
+          .withAnyHeaderCarrierParam()
+          .verify()
+      }
+    }
+
+    "In a scenario where we have both normal and by name parameters, PassByNameVerifier" should {
+      class SomeClass
+      class Foo {
+        def fooWithClass(someClass: SomeClass, f: => Unit): Int = 1
+        def fooWithInt(someValue: Int, f: => Unit): Int = 1
+        def fooWithString(someValue: Int, f: => String): Int = 1
+      }
+
+      "verify ArgumentMatchers for a class and by name param" in {
+        val mockFoo = mock[Foo]
+        val someClass = new SomeClass
+
+        mockFoo.fooWithClass(someClass, () => ())
+
+        PassByNameVerifier(mockFoo, "fooWithClass")
+          .withParamMatcher(ameq(someClass))
+          .withByNameParamMatcher(any[() => Unit])
+          .verify()
+      }
+
+      "verify ArgumentMatchers for a primitive and any by name param" in {
+        val mockFoo = mock[Foo]
+
+        mockFoo.fooWithString(1, "X")
+
+        PassByNameVerifier(mockFoo, "fooWithString")
+          .withParamMatcher(ameq(1))
+          .withByNameParamMatcher(any[() => Unit])
+          .verify()
+      }
+
+      "verify ArgumentMatchers for a primitive and an EQ by name param" in {
+        val mockFoo = mock[Foo]
+
+        mockFoo.fooWithString(1, "X")
+
+        PassByNameVerifier(mockFoo, "fooWithString")
+          .withParamMatcher(ameq(1))
+          .withByNameParamMatcher(ArgumentMatchers.argThat(byNameEqArgMatcher(() => "X")))
+          .verify()
+      }
+
+      "verify ArgumentMatchers a primitive and an EQ by name param using withByNameParamMatch" in {
+        val mockFoo = mock[Foo]
+
+        mockFoo.fooWithString(1, "X")
+
+        PassByNameVerifier(mockFoo, "fooWithString")
+          .withParamMatcher(ameq(1))
+          .withByNameParamMatcher(ArgumentMatchers.argThat(byNameEqArgMatcher(() => "X")))
+          .verify()
+      }
+
+      "verify ArgumentMatchers for a primitive and an EQ by name param using withByNameParam" in {
+        val mockFoo = mock[Foo]
+
+        mockFoo.fooWithString(1, "X")
+
+        PassByNameVerifier(mockFoo, "fooWithString")
+          .withParamMatcher(ameq(1))
+          .withByNameParam("X")
+          .verify()
       }
     }
 
     "in un-happy path" should {
       "verify there were zero interactions with this mock" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
-          .withByNameParam[String]("ERROR")
-          .withByNameParam[Throwable](expectedException)
+        private val passByName = PassByNameVerifier(mockLogger, "error")
+        .withByNameParam[String]("ERROR")
+        .withByNameParam[Throwable](expectedException)
 
-        val caught = intercept[Throwable](passByName.verify())
+        private val caught = intercept[Throwable](passByName.verify())
+
         caught.getCause.getMessage should include("there were zero interactions with this mock")
       }
 
       "verify there IllegalArgumentException thrown when verifying with empty parameters" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
-
+        private val passByName = PassByNameVerifier(mockLogger, "error")
         mockLogger.error("ERROR", expectedException)
 
-        val caught = intercept[Throwable](passByName.verify())
+        private val caught = intercept[Throwable](passByName.verify())
 
         caught.getMessage should include("no parameters specified.")
       }
 
       "verify wrong parameter type specification" in new SetUp {
-        val wrongParamType: Int = 1
-        val passByName = PassByNameVerifier(mockLogger, "error")
+        private val wrongParamType: Int = 1
+        mockLogger.error("ERROR", expectedException)
+        private val passByName = PassByNameVerifier(mockLogger, "error")
           .withByNameParam[Int](wrongParamType)
           .withByNameParam[Throwable](expectedException)
 
-        mockLogger.error("ERROR", expectedException)
+        private val caught = intercept[Throwable](passByName.verify())
 
-        val caught = intercept[Throwable](passByName.verify())
-        verifyInternalError(caught)
+        verifyInternalError(caught, "Argument(s) are different! Wanted:")
       }
 
       "verify String parameter value matching errors" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
+        mockLogger.error("VALUE_DOES_NOT_MATCH", expectedException)
+        private val passByName = PassByNameVerifier(mockLogger, "error")
           .withByNameParam[String]("ERROR")
           .withByNameParam[Throwable](expectedException)
 
-        mockLogger.error("VALUE_DOES_NOT_MATCH", expectedException)
+        private val caught = intercept[Throwable](passByName.verify())
 
-        val caught = intercept[Throwable](passByName.verify())
-        verifyInternalError(caught)
+        verifyInternalError(caught, "Argument(s) are different! Wanted:")
       }
 
       "verify Throwable parameter value matching errors" in new SetUp {
-        val passByName = PassByNameVerifier(mockLogger, "error")
+        mockLogger.error("Error", notExpectedException)
+        private val passByName = PassByNameVerifier(mockLogger, "error")
           .withByNameParam[String]("ERROR")
           .withByNameParam[Throwable](expectedException)
 
-        mockLogger.error("Error", notExpectedException)
+        private val caught = intercept[Throwable](passByName.verify())
 
-        val caught = intercept[Throwable](passByName.verify())
-        verifyInternalError(caught)
+        verifyInternalError(caught, "Argument(s) are different! Wanted:")
       }
     }
+
   }
 
-  private def verifyInternalError(caught: Throwable) = {
-    caught.getCause.getMessage should include("Malformed class name")
+  private def byNameEqArgMatcher[P](compare: P) = new ArgumentMatcher[P] {
+    override def matches(argument: P): Boolean =
+      argument.asInstanceOf[() => P].apply() == compare.asInstanceOf[() => P].apply()
+  }
+
+  private def verifyInternalError(caught: Throwable, msg: String) = {
+    caught.getCause.getMessage should include(msg)
   }
 }
