@@ -17,15 +17,16 @@
 package integration
 
 import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.play.{MixedPlaySpec, OneAppPerSuite}
+import org.scalatestplus.play.MixedPlaySpec
 import play.api.Application
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
+import play.api.libs.json.Json
 import uk.gov.hmrc.customs.api.common.CustomsApiCommonModule
 import uk.gov.hmrc.customs.api.common.domain.Registration
 import uk.gov.hmrc.play.bootstrap.AuditModule
 import util.{ExternalServicesConfig, RegistrationService}
 
-class ServiceLocatorRegistrationSpec extends MixedPlaySpec with BeforeAndAfterEach with RegistrationService with OneAppPerSuite {
+class ServiceLocatorRegistrationSpec extends MixedPlaySpec with BeforeAndAfterEach with RegistrationService {
 
   private val registration = Registration(
     "customs-wco-declaration",
@@ -65,13 +66,12 @@ class ServiceLocatorRegistrationSpec extends MixedPlaySpec with BeforeAndAfterEa
         }
       }
 
-    //TODO fix test
-//    "register itself in service locator microservice in start up when is enabled" in
-//      new App(app(enableServiceLocator = true)) {
-//
-//        eventually {
-//          verifyRegistrationServiceWasCalledFor(Json.toJson(registration))
-//        }
-//      }
+    "register itself in service locator microservice in start up when is enabled" in
+      new App(app(enableServiceLocator = true)) {
+
+        eventually {
+          verifyRegistrationServiceWasCalledFor(Json.toJson(registration))
+        }
+      }
   }
 }

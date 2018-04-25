@@ -22,10 +22,11 @@ import org.scalatest.mock.MockitoSugar
 import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import play.mvc.Http.MimeTypes.JSON
 import play.mvc.Http.Status.OK
-import uk.gov.hmrc.customs.api.common.config.WSHttp
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
 import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnector
 import uk.gov.hmrc.customs.api.common.domain.Registration
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,15 +41,16 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
   trait Setup {
     implicit val hc = HeaderCarrier()
     val serviceLocatorException = new RuntimeException
+    val mockServicesConfig = mock[ServicesConfig]
+    val mockHttpClient = mock[HttpClient]
 
-    val connector = new ServiceLocatorConnector {
-      override val http = mock[WSHttp]
+    val connector = new ServiceLocatorConnector(mockServicesConfig, mockHttpClient) {
       override val appUrl: String = APP_URL
       override val appName: String = APP_NAME
       override val serviceUrl: String = "https://SERVICE_LOCATOR"
       override val handlerOK: () => Unit = mock[() => Unit]
       override val handlerError: Throwable => Unit = mock[Throwable => Unit]
-      override val metadata: Option[Map[String, String]] = Some(Map(THIRD_PARTY_API -> true.toString))
+      override val metadata = Some(Map(THIRD_PARTY_API -> true.toString))
     }
   }
 
@@ -58,11 +60,11 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
       val registration = Registration(serviceName = APP_NAME, serviceUrl = APP_URL,
         metadata = Some(Map(THIRD_PARTY_API -> "true")))
 
-      when(connector.http.POST(s"${connector.serviceUrl}/registration", registration,
+      when(mockHttpClient.POST(s"${connector.serviceUrl}/registration", registration,
         Seq(CONTENT_TYPE -> JSON))).thenReturn(Future.successful(HttpResponse(OK)))
 
       connector.register.futureValue shouldBe true
-      verify(connector.http).POST("https://SERVICE_LOCATOR/registration", registration,
+      verify(mockHttpClient).POST("https://SERVICE_LOCATOR/registration", registration,
         Seq(CONTENT_TYPE -> JSON))
       verify(connector.handlerOK).apply()
       verify(connector.handlerError, never).apply(serviceLocatorException)
@@ -72,11 +74,11 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
 
       val registration = Registration(serviceName = APP_NAME, serviceUrl = APP_URL,
         metadata = Some(Map(THIRD_PARTY_API -> "true")))
-      when(connector.http.POST(s"${connector.serviceUrl}/registration", registration,
+      when(mockHttpClient.POST(s"${connector.serviceUrl}/registration", registration,
         Seq(CONTENT_TYPE -> JSON))).thenReturn(Future.failed(serviceLocatorException))
 
       connector.register.futureValue shouldBe false
-      verify(connector.http).POST("https://SERVICE_LOCATOR/registration", registration,
+      verify(mockHttpClient).POST("https://SERVICE_LOCATOR/registration", registration,
         Seq(CONTENT_TYPE -> JSON))
       verify(connector.handlerOK, never).apply()
       verify(connector.handlerError).apply(serviceLocatorException)

@@ -16,13 +16,16 @@
 
 package uk.gov.hmrc.customs.api.common
 
-import com.google.inject.AbstractModule
-import uk.gov.hmrc.customs.api.common.services.ServiceLocatorRegistrationService
+import play.api.inject.{Binding, Module}
+import play.api.{Configuration, Environment}
+import uk.gov.hmrc.customs.api.common.services.{ServiceLocatorRegistrationService, ServiceLocatorRegistrationServiceImpl}
+import uk.gov.hmrc.play.bootstrap.http.{DefaultHttpClient, HttpClient}
 
-class CustomsApiCommonModule extends AbstractModule {
+class CustomsApiCommonModule extends Module {
 
-  protected def configure(): Unit = {
-    bind(classOf[ServiceLocatorRegistrationService]).asEagerSingleton()
-  }
+  override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
+    bind[ServiceLocatorRegistrationService].to[ServiceLocatorRegistrationServiceImpl].eagerly(),
+    bind[HttpClient].to[DefaultHttpClient]
+  )
 
 }

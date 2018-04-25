@@ -20,23 +20,23 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import play.mvc.Http.MimeTypes.JSON
-import uk.gov.hmrc.customs.api.common.config.{ServicesConfig, WSHttp}
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
 import uk.gov.hmrc.customs.api.common.domain.Registration
 import uk.gov.hmrc.http._
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+@Singleton
+class ServiceLocatorConnector @Inject()(servicesConfig: ServicesConfig, http: HttpClient) {
 
-trait ServiceLocatorConnector {
-
-  val appName: String
-  val appUrl: String
-  val serviceUrl: String
-  val handlerOK: () => Unit
-  val handlerError: Throwable => Unit
-  val metadata: Option[Map[String, String]]
-  val http: WSHttp
+  val appName = servicesConfig.getString("appName")
+  val appUrl = servicesConfig.getString("appUrl")
+  val serviceUrl = servicesConfig.baseUrl("service-locator")
+  val handlerOK = () => Logger.info("Service is registered with the service locator")
+  val handlerError = (e: Throwable) => Logger.error("Service could not register with the service locator", e)
+  val metadata = Some(Map("third-party-api" -> "true"))
 
   def register(implicit hc: HeaderCarrier): Future[Boolean] = {
     val registration = Registration(appName, appUrl, metadata)
@@ -51,17 +51,4 @@ trait ServiceLocatorConnector {
         false
     }
   }
-}
-
-@Singleton
-class ServiceLocatorConnectorImpl @Inject()(servicesConfig: ServicesConfig, wsHttp: WSHttp) extends ServiceLocatorConnector {
-
-  val appName = servicesConfig.getString("appName")
-  val appUrl =  servicesConfig.getString("appUrl")
-  val serviceUrl = servicesConfig.baseUrl("service-locator")
-  val http: WSHttp = wsHttp
-  val handlerOK = () => Logger.info("Service is registered with the service locator")
-  val handlerError = (e: Throwable) => Logger.error("Service could not register with the service locator", e)
-  val metadata = Some(Map("third-party-api" -> "true"))
-
 }
