@@ -1,4 +1,3 @@
-
 # Customs API Common
 
 [![Build Status](https://travis-ci.org/hmrc/customs-api-common.svg?branch=master)](https://travis-ci.org/hmrc/customs-api-common) [ ![Download](https://api.bintray.com/packages/hmrc/releases/customs-api-common/images/download.svg) ](https://bintray.com/hmrc/releases/customs-api-common/_latestVersion)
@@ -50,13 +49,7 @@ Make sure you have the following entries
     # ~~~~
     # Additional play modules can be added here
     play.modules.enabled += "com.kenshoo.play.metrics.PlayModule"
-    play.modules.enabled += "uk.gov.hmrc.play.config.inject.ConfigModule"
-
-    # Global object class
-    # ~~~~~
-    # Define the Global object class for this application.
-    # Default to Global in the root package.
-    application.global = uk.gov.hmrc.customs.api.common.config.CustomsApiGlobal
+    play.modules.enabled += "uk.gov.hmrc.customs.api.common.CustomsApiCommonModule"
 
     play.http.requestHandler = "play.api.http.GlobalSettingsHttpRequestHandler"
     play.http.errorHandler = "uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler"

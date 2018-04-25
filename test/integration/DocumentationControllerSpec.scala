@@ -25,7 +25,7 @@ import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.config.inject.ConfigModule
+import uk.gov.hmrc.play.bootstrap.AuditModule
 import util.ExternalServicesConfig
 
 import scala.concurrent.Future
@@ -38,12 +38,11 @@ class DocumentationControllerSpec extends IntegrationTestSpec with MockitoSugar 
   private val applicationRamlContent = getResourceFileContent("/public/api/conf/1.0/application.raml")
 
   override implicit lazy val app: Application = GuiceApplicationBuilder(
-    modules = Seq(GuiceableModule.guiceable(new ConfigModule())))
+    modules = Seq(GuiceableModule.guiceable(new AuditModule)))
     .configure(
       Map(
         "play.http.router" -> "definition.Routes",
         "application.logger.name" -> "customs-api-common",
-        "application.global" -> "uk.gov.hmrc.customs.api.common.config.CustomsApiGlobal",
         "appName" -> "customs-wco-declaration",
         "appUrl" -> "http://customs-wco-declaration.service",
         "microservice.services.service-locator.host" -> ExternalServicesConfig.Host,

@@ -16,19 +16,20 @@
 
 package unit.connectors
 
-import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnector
-import uk.gov.hmrc.customs.api.common.domain.Registration
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import play.mvc.Http.MimeTypes.JSON
 import play.mvc.Http.Status.OK
+import uk.gov.hmrc.customs.api.common.config.WSHttp
+import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnector
+import uk.gov.hmrc.customs.api.common.domain.Registration
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.test.UnitSpec
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpPost, HttpResponse }
 
 class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
@@ -41,12 +42,12 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
     val serviceLocatorException = new RuntimeException
 
     val connector = new ServiceLocatorConnector {
-      override val http = mock[HttpPost]
+      override val http = mock[WSHttp]
       override val appUrl: String = APP_URL
       override val appName: String = APP_NAME
       override val serviceUrl: String = "https://SERVICE_LOCATOR"
       override val handlerOK: () => Unit = mock[() => Unit]
-      override val handlerError: Throwable => Unit = mock[(Throwable) => Unit]
+      override val handlerError: Throwable => Unit = mock[Throwable => Unit]
       override val metadata: Option[Map[String, String]] = Some(Map(THIRD_PARTY_API -> true.toString))
     }
   }

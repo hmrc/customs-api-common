@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.customs.api.common.controllers
+package uk.gov.hmrc.customs.api.common.config
 
-import controllers.AssetsBuilder
 import javax.inject.{Inject, Singleton}
-import play.api.http.HttpErrorHandler
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import play.api.{Configuration, Environment}
+import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.hooks.HttpHook
 
 @Singleton
-class DocumentationController @Inject()(errorHandler: HttpErrorHandler) extends AssetsBuilder(errorHandler)
-  with BaseController {
-  def conf(version: String, file: String): Action[AnyContent] = {
-    super.at(s"/public/api/conf/$version", file)
-  }
+class WSHttp extends uk.gov.hmrc.play.http.ws.WSHttp
+  with HttpGet with HttpPut with HttpPost with HttpDelete with HttpPatch {
+  val hooks: Seq[HttpHook] = NoneRequired
+}
+
+@Singleton
+class ServicesConfig @Inject() (override val runModeConfiguration: Configuration,
+                                environment: Environment) extends uk.gov.hmrc.play.config.ServicesConfig {
+  override protected def mode = environment.mode
 }

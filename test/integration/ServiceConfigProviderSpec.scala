@@ -16,14 +16,12 @@
 
 package integration
 
-import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider}
-import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
-import uk.gov.hmrc.play.config.inject.ServicesConfig
+import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider, ServicesConfig}
 import util.DynamicServiceTestData
 
-class ServiceConfigProviderSpec extends IntegrationTestSpec with OneAppPerSuite with BeforeAndAfterEach with DynamicServiceTestData {
+class ServiceConfigProviderSpec extends IntegrationTestSpec with OneAppPerSuite with DynamicServiceTestData {
 
   private val serviceConfigProvider = new ServiceConfigProvider(app.injector.instanceOf[ServicesConfig])
 

@@ -17,15 +17,14 @@
 package unit.config
 
 import com.typesafe.config.{Config, ConfigFactory}
-import uk.gov.hmrc.customs.api.common.config.ConfigValidationNelAdaptor
 import org.scalatest.Matchers
 import org.scalatest.mock.MockitoSugar
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.play.config.inject.ServicesConfig
+import scalaz.syntax.validation._
+import uk.gov.hmrc.customs.api.common.config.{ConfigValidationNelAdaptor, ServicesConfig}
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.duration.DurationInt
-import scalaz.syntax.validation._
 
 
 class ConfigValidationNelAdaptorSpec extends UnitSpec with MockitoSugar with Matchers {
@@ -59,10 +58,8 @@ class ConfigValidationNelAdaptorSpec extends UnitSpec with MockitoSugar with Mat
   private val prefixMissingContextConfig: Config = appConfig("context")
   private val nullContextConfig: Config = appConfig("null")
 
-  private def testServicesConfig(configuration: Config) = new ServicesConfig {
-    override val runModeConfiguration = new Configuration(configuration)
+  private def testServicesConfig(configuration: Config) = new ServicesConfig(new Configuration(configuration), mock[Environment]) {
     override val mode = play.api.Mode.Test
-    override def environment: Environment = mock[Environment]
   }
 
   private val configValidationNelAdaptor = new ConfigValidationNelAdaptor(testServicesConfig(validAppConfig), new Configuration(validAppConfig))

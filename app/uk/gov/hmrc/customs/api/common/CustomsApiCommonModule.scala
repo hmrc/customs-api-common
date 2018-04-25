@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.customs.api.common.config
+package uk.gov.hmrc.customs.api.common
 
-import play.api.{Application, Play}
+import com.google.inject.AbstractModule
+import uk.gov.hmrc.customs.api.common.services.ServiceLocatorRegistrationService
 
-trait PlayCurrentApp {
-  def app: Application = Play.current
+class CustomsApiCommonModule extends AbstractModule {
+
+  protected def configure(): Unit = {
+    bind(classOf[ServiceLocatorRegistrationService]).asEagerSingleton()
+  }
+
 }

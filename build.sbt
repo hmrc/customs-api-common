@@ -51,7 +51,7 @@ lazy val microservice = (project in file("."))
     scoverageSettings
   )
 
-def onPackageName(rootPackage: String): (String => Boolean) = {
+def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
 }
 
@@ -93,7 +93,7 @@ lazy val endtoendTestSettings =
 
 lazy val scoverageSettings: Seq[Setting[_]] = Seq(
   coverageExcludedPackages := "<empty>;Reverse.*;.*(AuthService|BuildInfo|Routes).*",
-  coverageMinimum := 96,
+  coverageMinimum := 93,
   coverageFailOnMinimum := true,
   coverageHighlighting := true,
   parallelExecution in Test := false
@@ -110,7 +110,8 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] = sbtrelease.ReleasePlugin.
   Seq(credentials += SbtCredentials) ++
   publishAllArtefacts
 
-val compileDependencies = Seq(microserviceBootStrap, authClient, xmlResolver, scalaz)
+publishArtifact in Test := true
+val compileDependencies = Seq(bootstrapPlay25, authClient, xmlResolver, scalaz)
 
 
 val testDependencies = Seq(hmrcTest, scalaTest, pegDown,

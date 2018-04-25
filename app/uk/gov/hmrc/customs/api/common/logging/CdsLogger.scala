@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.customs.api.common.logging
 
-import javax.inject.Singleton
-
 import com.google.inject.Inject
-import uk.gov.hmrc.play.config.inject.ServicesConfig
+import javax.inject.Singleton
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
 
 @Singleton
 class CdsLogger @Inject() (serviceConfig: ServicesConfig) {
