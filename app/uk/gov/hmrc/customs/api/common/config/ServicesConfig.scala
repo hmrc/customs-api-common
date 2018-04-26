@@ -18,14 +18,6 @@ package uk.gov.hmrc.customs.api.common.config
 
 import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.http._
-import uk.gov.hmrc.http.hooks.HttpHook
-
-@Singleton
-class WSHttp extends uk.gov.hmrc.play.http.ws.WSHttp
-  with HttpGet with HttpPut with HttpPost with HttpDelete with HttpPatch {
-  val hooks: Seq[HttpHook] = NoneRequired
-}
 
 @Singleton
 class ServicesConfig @Inject() (override val runModeConfiguration: Configuration,

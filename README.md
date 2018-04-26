@@ -48,11 +48,11 @@ Make sure you have the following entries
     # Play Modules
     # ~~~~
     # Additional play modules can be added here
-    play.modules.enabled += "com.kenshoo.play.metrics.PlayModule"
     play.modules.enabled += "uk.gov.hmrc.customs.api.common.CustomsApiCommonModule"
 
-    play.http.requestHandler = "play.api.http.GlobalSettingsHttpRequestHandler"
     play.http.errorHandler = "uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler"
+    
+For more details on configuration see [here](https://github.com/hmrc/bootstrap-play-25/). 
 
 #### Configure Service Locator
 
