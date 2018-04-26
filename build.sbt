@@ -111,7 +111,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] = sbtrelease.ReleasePlugin.
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapPlay25, authClient, xmlResolver, scalaz)
+val compileDependencies = Seq(bootstrapPlay25, xmlResolver, scalaz)
 
 
 val testDependencies = Seq(hmrcTest, scalaTest, pegDown,
@@ -121,6 +121,4 @@ unmanagedResourceDirectories in Compile += baseDirectory.value / "public"
 
 libraryDependencies ++= compileDependencies ++ testDependencies
 
-evictionWarningOptions in update :=
-  EvictionWarningOptions.default
-    .withWarnScalaVersionEviction(false)
+evictionWarningOptions in update := EvictionWarningOptions.default.withWarnTransitiveEvictions(false)
