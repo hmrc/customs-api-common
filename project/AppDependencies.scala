@@ -13,7 +13,7 @@ object AppDependencies {
   private val scalazVersion = "7.2.15"
   private val testScope = "test,it"
 
-  val bootstrapPlay25 = "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlay25Version
+  val bootstrapPlay25: ModuleID = "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlay25Version
 
   val xmlResolver: ModuleID = "xml-resolver" % "xml-resolver" % "1.2"
 
