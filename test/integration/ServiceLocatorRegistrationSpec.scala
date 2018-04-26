@@ -16,17 +16,17 @@
 
 package integration
 
-import uk.gov.hmrc.customs.api.common.domain.Registration
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.MixedPlaySpec
 import play.api.Application
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.config.inject.ConfigModule
+import uk.gov.hmrc.customs.api.common.CustomsApiCommonModule
+import uk.gov.hmrc.customs.api.common.domain.Registration
+import uk.gov.hmrc.play.bootstrap.AuditModule
 import util.{ExternalServicesConfig, RegistrationService}
 
-class ServiceLocatorRegistrationSpec extends MixedPlaySpec
-  with BeforeAndAfterEach with BeforeAndAfterAll with RegistrationService {
+class ServiceLocatorRegistrationSpec extends MixedPlaySpec with BeforeAndAfterEach with RegistrationService {
 
   private val registration = Registration(
     "customs-wco-declaration",
@@ -45,7 +45,6 @@ class ServiceLocatorRegistrationSpec extends MixedPlaySpec
   def createTestConfiguration(enableServiceLocator: Boolean): Map[String, Any] = {
     Map(
       "application.logger.name" -> "customs-api-common",
-      "application.global" -> "uk.gov.hmrc.customs.api.common.config.CustomsApiGlobal",
       "appName" -> "customs-wco-declaration",
       "appUrl" -> "http://customs-wco-declaration.service",
       "microservice.services.service-locator.host" -> ExternalServicesConfig.Host,
@@ -54,10 +53,10 @@ class ServiceLocatorRegistrationSpec extends MixedPlaySpec
     )}
 
   private def app(enableServiceLocator: Boolean): Application =
-    GuiceApplicationBuilder(modules = Seq(GuiceableModule.guiceable(new ConfigModule())))
+    GuiceApplicationBuilder(modules = Seq(GuiceableModule.guiceable(new AuditModule), GuiceableModule.guiceable(new CustomsApiCommonModule)))
       .configure(createTestConfiguration(enableServiceLocator)).build()
 
-  "Single UCC Compliant Declaration Microservice" should {
+    "Single UCC Compliant Declaration Microservice" should {
 
     "not register itself in service locator microservice in start up when is disabled" in
       new App(app(enableServiceLocator = false)) {

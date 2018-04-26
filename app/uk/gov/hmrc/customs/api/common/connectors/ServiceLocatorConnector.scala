@@ -16,28 +16,27 @@
 
 package uk.gov.hmrc.customs.api.common.connectors
 
-import uk.gov.hmrc.customs.api.common.domain.Registration
-import play.api.{Application, Logger}
+import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import play.mvc.Http.MimeTypes.JSON
-import uk.gov.hmrc.play.config.ServicesConfig
-import uk.gov.hmrc.play.http.ws.WSPost
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
+import uk.gov.hmrc.customs.api.common.domain.Registration
+import uk.gov.hmrc.http._
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpPost }
-import uk.gov.hmrc.http.hooks.HttpHook
 
+@Singleton
+class ServiceLocatorConnector @Inject()(servicesConfig: ServicesConfig, http: HttpClient) {
 
-trait ServiceLocatorConnector {
-
-  val appName: String
-  val appUrl: String
-  val serviceUrl: String
-  val handlerOK: () => Unit
-  val handlerError: Throwable => Unit
-  val metadata: Option[Map[String, String]]
-  val http: HttpPost
+  val appName = servicesConfig.getString("appName")
+  val appUrl = servicesConfig.getString("appUrl")
+  val serviceUrl = servicesConfig.baseUrl("service-locator")
+  val handlerOK = () => Logger.info("Service is registered with the service locator")
+  val handlerError = (e: Throwable) => Logger.error("Service could not register with the service locator", e)
+  val metadata = Some(Map("third-party-api" -> "true"))
 
   def register(implicit hc: HeaderCarrier): Future[Boolean] = {
     val registration = Registration(appName, appUrl, metadata)
@@ -52,19 +51,4 @@ trait ServiceLocatorConnector {
         false
     }
   }
-}
-
-class ServiceLocatorConnectorImpl(val app: Application) extends ServiceLocatorConnector with ServicesConfig {
-  val appName = forConfigString("appName")
-  val appUrl = forConfigString("appUrl")
-  val serviceUrl = baseUrl("service-locator")
-  val http = new HttpPost with WSPost {
-    override val hooks: Seq[HttpHook] = NoneRequired
-  }
-  val handlerOK = () => Logger.info("Service is registered on the service locator")
-  val handlerError = (e: Throwable) => Logger.error("Service could not register on the service locator", e)
-  val metadata = Some(Map("third-party-api" -> "true"))
-
-  private def forConfigString(key: String): String = app.configuration.getString(key)
-    .getOrElse(throw new RuntimeException(s"$key is not configured"))
 }

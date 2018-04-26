@@ -17,15 +17,13 @@
 package uk.gov.hmrc.customs.api.common.config
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.Configuration
-import uk.gov.hmrc.play.config.inject.ServicesConfig
-
-import scala.concurrent.duration.Duration
+import scalaz.Validation.FlatMap._
 import scalaz._
 import scalaz.syntax.apply._
 import scalaz.syntax.validation._
-import Validation.FlatMap._
+
+import scala.concurrent.duration.Duration
 
 /**
   * <p>

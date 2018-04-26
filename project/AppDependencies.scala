@@ -2,8 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val microserviceBootstrapVersion = "6.12.0"
-  private val authClientVersion = "2.3.0"
+  private val bootstrapPlay25Version = "1.5.0"
   private val hmrcTestVersion = "2.3.0"
   private val scalaTestVersion = "2.2.6"
   private val scalatestplusVersion = "1.5.1"
@@ -13,11 +12,9 @@ object AppDependencies {
   private val scalazVersion = "7.2.15"
   private val testScope = "test,it"
 
+  val bootstrapPlay25: ModuleID = "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlay25Version
+
   val xmlResolver: ModuleID = "xml-resolver" % "xml-resolver" % "1.2"
-
-  val microserviceBootStrap: ModuleID = "uk.gov.hmrc" %% "microservice-bootstrap" % microserviceBootstrapVersion
-
-  val authClient: ModuleID =  "uk.gov.hmrc" %% "auth-client" % authClientVersion
 
   val hmrcTest: ModuleID = "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % testScope
 

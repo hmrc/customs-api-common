@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.customs.api.common.config
 
-import play.api.{Application, Play}
+import javax.inject.{Inject, Singleton}
+import play.api.{Configuration, Environment}
 
-trait PlayCurrentApp {
-  def app: Application = Play.current
+@Singleton
+class ServicesConfig @Inject() (override val runModeConfiguration: Configuration,
+                                environment: Environment) extends uk.gov.hmrc.play.config.ServicesConfig {
+  override protected def mode = environment.mode
 }

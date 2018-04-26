@@ -16,20 +16,24 @@
 
 package uk.gov.hmrc.customs.api.common.services
 
-import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnectorImpl
-import play.api.{Application, Logger}
-import uk.gov.hmrc.play.config.ServicesConfig
+import javax.inject.{Inject, Singleton}
+import play.api.Logger
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
+import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnector
 import uk.gov.hmrc.http.HeaderCarrier
 
-trait ServiceLocatorRegistrationService extends ServicesConfig {
-  private def registrationEnabled: Boolean = getConfBool("service-locator.enabled", defBool = true)
+trait ServiceLocatorRegistrationService
 
-  def registerIfEnabled(application: Application): Unit = {
-    if (registrationEnabled) {
-      Logger.info("Registering the Service")
-      new ServiceLocatorConnectorImpl(application).register(HeaderCarrier())
-    } else {
-      Logger.warn("Registration in Service Locator is disabled")
-    }
+@Singleton
+class ServiceLocatorRegistrationServiceImpl @Inject()(serviceLocatorConnector: ServiceLocatorConnector,
+                                                  servicesConfig: ServicesConfig) extends ServiceLocatorRegistrationService {
+
+  val registrationEnabled: Boolean = servicesConfig.getConfBool("service-locator.enabled", defBool = true)
+
+  if (registrationEnabled) {
+    Logger.info("Registering the Service")
+    serviceLocatorConnector.register(HeaderCarrier())
+  } else {
+    Logger.warn("Registration in Service Locator is disabled")
   }
 }

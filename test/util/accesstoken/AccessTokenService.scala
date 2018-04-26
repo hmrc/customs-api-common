@@ -17,13 +17,12 @@
 package util.accesstoken
 
 import java.net.URL
+
 import javax.inject.Inject
-
 import org.openqa.selenium.{By, WebDriver}
-import play.api.Application
-import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.customs.api.common.config.ServicesConfig
 
-class AccessTokenService @Inject()(val app: Application) extends ServicesConfig {
+class AccessTokenService @Inject() (servicesConfig: ServicesConfig) {
 
   implicit val webDriver: WebDriver = Env.driver
   lazy val params: AccessTokenRequest = accessTokenRequest()
@@ -72,10 +71,10 @@ class AccessTokenService @Inject()(val app: Application) extends ServicesConfig 
 
   private def accessTokenRequest(): AccessTokenRequest = {
     AccessTokenRequest(
-      host = getConfString("accessToken.oauthFrontendHost", throw new IllegalStateException("host is missing"))
-      , clientId = getConfString("accessToken.clientId", throw new IllegalStateException("clientId is missing"))
-      , username = getConfString("accessToken.username", throw new IllegalStateException("username is missing"))
-      , password = getConfString("accessToken.password", throw new IllegalStateException("password is missing"))
+      host = servicesConfig.getConfString("accessToken.oauthFrontendHost", throw new IllegalStateException("host is missing"))
+      , clientId = servicesConfig.getConfString("accessToken.clientId", throw new IllegalStateException("clientId is missing"))
+      , username = servicesConfig.getConfString("accessToken.username", throw new IllegalStateException("username is missing"))
+      , password = servicesConfig.getConfString("accessToken.password", throw new IllegalStateException("password is missing"))
     )
   }
 
