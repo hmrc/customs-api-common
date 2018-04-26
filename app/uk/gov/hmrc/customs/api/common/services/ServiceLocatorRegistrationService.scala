@@ -22,11 +22,9 @@ import uk.gov.hmrc.customs.api.common.config.ServicesConfig
 import uk.gov.hmrc.customs.api.common.connectors.ServiceLocatorConnector
 import uk.gov.hmrc.http.HeaderCarrier
 
-trait ServiceLocatorRegistrationService
-
 @Singleton
-class ServiceLocatorRegistrationServiceImpl @Inject()(serviceLocatorConnector: ServiceLocatorConnector,
-                                                  servicesConfig: ServicesConfig) extends ServiceLocatorRegistrationService {
+class ServiceLocatorRegistrationService @Inject()(serviceLocatorConnector: ServiceLocatorConnector,
+                                                  servicesConfig: ServicesConfig) {
 
   val registrationEnabled: Boolean = servicesConfig.getConfBool("service-locator.enabled", defBool = true)
 
