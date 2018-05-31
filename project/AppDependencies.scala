@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlay25Version = "1.5.0"
+  private val bootstrapPlay25Version = "1.6.0"
   private val hmrcTestVersion = "2.3.0"
   private val scalaTestVersion = "2.2.6"
   private val scalatestplusVersion = "1.5.1"
