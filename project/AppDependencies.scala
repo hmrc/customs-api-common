@@ -6,7 +6,7 @@ object AppDependencies {
   private val hmrcTestVersion = "2.3.0"
   private val scalaTestVersion = "2.2.6"
   private val scalatestplusVersion = "1.5.1"
-  private val mockitoVersion = "2.6.2"
+  private val mockitoVersion = "2.19.1"
   private val pegdownVersion = "1.6.0"
   private val wireMockVersion = "2.2.2"
   private val scalazVersion = "7.2.15"
@@ -26,7 +26,7 @@ object AppDependencies {
 
   val wireMock: ModuleID = "com.github.tomakehurst" % "wiremock" % wireMockVersion % testScope exclude("org.apache.httpcomponents","httpclient") exclude("org.apache.httpcomponents","httpcore")
 
-  val mockito: ModuleID =  "org.mockito" % "mockito-core" % mockitoVersion % testScope
+  val mockito: ModuleID =  "org.mockito" % "mockito-inline" % mockitoVersion % testScope
 
   val scalaz: ModuleID = "org.scalaz" %% "scalaz-core" % scalazVersion
 
