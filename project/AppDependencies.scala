@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlay25Version = "1.7.0"
+  private val bootstrapPlay25Version = "3.2.0"
   private val hmrcTestVersion = "2.3.0"
   private val scalaTestVersion = "2.2.6"
   private val scalatestplusVersion = "1.5.1"
@@ -10,6 +10,7 @@ object AppDependencies {
   private val pegdownVersion = "1.6.0"
   private val wireMockVersion = "2.2.2"
   private val scalazVersion = "7.2.15"
+  private val xercesVersion = "2.12.0"
   private val testScope = "test,it"
 
   val bootstrapPlay25: ModuleID = "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlay25Version
@@ -29,5 +30,8 @@ object AppDependencies {
   val mockito: ModuleID =  "org.mockito" % "mockito-core" % mockitoVersion % testScope
 
   val scalaz: ModuleID = "org.scalaz" %% "scalaz-core" % scalazVersion
+
+  val xerces: ModuleID ="xerces" % "xercesImpl" % xercesVersion
+
 
 }
