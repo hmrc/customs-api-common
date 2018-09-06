@@ -33,5 +33,4 @@ object AppDependencies {
 
   val xerces: ModuleID ="xerces" % "xercesImpl" % xercesVersion
 
-
 }
