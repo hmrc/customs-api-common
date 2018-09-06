@@ -18,7 +18,7 @@ package integration
 
 import java.io.FileNotFoundException
 
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}

@@ -19,7 +19,7 @@ package unit.logger
 import org.mockito.{ArgumentMatcher, ArgumentMatchers}
 import org.mockito.ArgumentMatchers.{any, eq => ameq}
 import org.scalatest.Matchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import util.MockitoPassByNameHelper.PassByNameVerifier
@@ -55,7 +55,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
 
         PassByNameVerifier(mockLogger, "error")
           .withByNameParam[String]("ERROR")
-          .withAnyHeaderCarrierParam()
+          .withParamMatcher(any[HeaderCarrier])
           .verify()
       }
     }

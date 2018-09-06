@@ -19,14 +19,14 @@ package unit.controllers.dynamicservice
 import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfig, ServiceConfigProvider}
 import uk.gov.hmrc.customs.api.common.controllers.dynamicservice.DynamicServiceConfigurationController
 import org.mockito.Mockito._
-import org.scalatest.ShouldMatchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.Matchers
+import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 
-class DynamicServiceConfigurationControllerSpec extends UnitSpec with ShouldMatchers with MockitoSugar {
+class DynamicServiceConfigurationControllerSpec extends UnitSpec with Matchers with MockitoSugar {
   private val validService           = "service"
   private val invalidService         = "invalid-service"
   private val environment            = "environment"
