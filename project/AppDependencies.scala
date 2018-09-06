@@ -3,8 +3,8 @@ import sbt._
 object AppDependencies {
 
   private val bootstrapPlay25Version = "3.2.0"
-  private val hmrcTestVersion = "2.3.0"
-  private val scalaTestVersion = "2.2.6"
+  private val hmrcTestVersion = "3.0.0"
+  private val scalaTestVersion = "3.0.0"
   private val scalatestplusVersion = "1.5.1"
   private val mockitoVersion = "2.6.2"
   private val pegdownVersion = "1.6.0"

@@ -16,7 +16,7 @@
 
 package acceptance
 
-import org.scalatest.{BeforeAndAfterEach, FeatureSpec, GivenWhenThen, ShouldMatchers}
+import org.scalatest.{BeforeAndAfterEach, FeatureSpec, GivenWhenThen, Matchers}
 import org.scalatestplus.play.OneAppPerSuite
 import play.api.Application
 import play.api.libs.json.Json
@@ -24,7 +24,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import util.DynamicServiceTestData
 
-class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen with ShouldMatchers with OneAppPerSuite with BeforeAndAfterEach with DynamicServiceTestData {
+class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen with Matchers with OneAppPerSuite with BeforeAndAfterEach with DynamicServiceTestData {
 
   override implicit lazy val app: Application = configuredApplication
 
