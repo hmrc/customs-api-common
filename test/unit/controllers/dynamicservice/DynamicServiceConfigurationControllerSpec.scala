@@ -20,7 +20,7 @@ import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, Servi
 import uk.gov.hmrc.customs.api.common.controllers.dynamicservice.DynamicServiceConfigurationController
 import org.mockito.Mockito._
 import org.scalatest.Matchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

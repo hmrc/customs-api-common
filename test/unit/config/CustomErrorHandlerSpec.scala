@@ -20,7 +20,7 @@ import javax.inject.Provider
 
 import uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler
 import org.mockito.Mockito.when
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.Json
 import play.api.mvc.{RequestHeader, Result}
 import play.api.routing.Router

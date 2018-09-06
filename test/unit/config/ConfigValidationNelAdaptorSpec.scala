@@ -18,7 +18,7 @@ package unit.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.scalatest.Matchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import play.api.{Configuration, Environment}
 import scalaz.syntax.validation._
 import uk.gov.hmrc.customs.api.common.config.{ConfigValidationNelAdaptor, ServicesConfig}
