@@ -15,7 +15,7 @@ name := "customs-api-common"
 
 targetJvm := "jvm-1.8"
 
-resolvers += Resolver.bintrayRepo("hmrc", "releases")
+resolvers  ++= Seq(Resolver.bintrayRepo("hmrc", "releases"), Resolver.jcenterRepo)
 
 publishArtifact in (Test, packageBin) := true
 publishArtifact in (Test, packageSrc) := true
@@ -37,7 +37,7 @@ lazy val testAll = TaskKey[Unit]("test-all")
 lazy val allTest = Seq( testAll := (test in AcceptanceTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
 
 lazy val microservice = (project in file("."))
-  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
+  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
   .configs(testConfig: _*)
   .settings(
@@ -49,7 +49,8 @@ lazy val microservice = (project in file("."))
     playPublishingSettings,
     allTest,
     scoverageSettings
-  )
+  ).settings(majorVersion := 1)
+  .settings(makePublicallyAvailableOnBintray := true)
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
