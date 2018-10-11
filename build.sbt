@@ -5,7 +5,7 @@ import sbt.Tests.{Group, SubProcess}
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings, targetJvm}
 import uk.gov.hmrc.PublishingSettings._
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+
 
 import scala.language.postfixOps
 
@@ -37,7 +37,7 @@ lazy val testAll = TaskKey[Unit]("test-all")
 lazy val allTest = Seq( testAll := (test in AcceptanceTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
 
 lazy val microservice = (project in file("."))
-  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
+  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
   .configs(testConfig: _*)
   .settings(
@@ -103,7 +103,6 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
 
 lazy val commonSettings: Seq[Setting[_]] = scalaSettings ++
-  publishingSettings ++
   defaultSettings() ++
   gitStampSettings
 
