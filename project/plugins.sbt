@@ -14,8 +14,6 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.12")
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-settings" % "3.8.0")
 
-addSbtPlugin("uk.gov.hmrc" % "sbt-distributables" % "1.1.0")
-
 addSbtPlugin("uk.gov.hmrc" % "sbt-git-stamp" % "5.5.0")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
