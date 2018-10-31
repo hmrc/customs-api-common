@@ -9,7 +9,7 @@ object AppDependencies {
   private val mockitoVersion = "2.10.0"
   private val pegdownVersion = "1.6.0"
   private val wireMockVersion = "2.18.0"
-  private val scalazVersion = "7.2.26"
+  private val catsVersion = "1.4.0"
   private val xercesVersion = "2.12.0"
   private val testScope = "test,it"
 
@@ -29,7 +29,7 @@ object AppDependencies {
 
   val mockito: ModuleID =  "org.mockito" % "mockito-core" % mockitoVersion % testScope
 
-  val scalaz: ModuleID = "org.scalaz" %% "scalaz-core" % scalazVersion
+  val cats: ModuleID = "org.typelevel" %% "cats-core" % catsVersion
 
   val xerces: ModuleID ="xerces" % "xercesImpl" % xercesVersion
 
