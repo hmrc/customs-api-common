@@ -111,7 +111,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] = sbtrelease.ReleasePlugin.
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapPlay25, xmlResolver, cats, xerces)
+val compileDependencies = Seq(bootstrapPlay25, xmlResolver, cats, xerces, logbackJsonLogger)
 
 val testDependencies = Seq(hmrcTest, scalaTest, pegDown,
   scalaTestPlusPlay, wireMock, mockito)

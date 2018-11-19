@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlay25Version = "3.14.0"
+  private val bootstrapPlay25Version = "3.15.0"
   private val hmrcTestVersion = "3.0.0"
   private val scalaTestVersion = "3.0.5"
   private val scalatestplusVersion = "2.0.1"
@@ -11,6 +11,7 @@ object AppDependencies {
   private val wireMockVersion = "2.18.0"
   private val catsVersion = "1.4.0"
   private val xercesVersion = "2.12.0"
+  private val logbackJsonLoggerVersion = "4.1.0"
   private val testScope = "test,it"
 
   val bootstrapPlay25: ModuleID = "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlay25Version
@@ -33,4 +34,5 @@ object AppDependencies {
 
   val xerces: ModuleID ="xerces" % "xercesImpl" % xercesVersion
 
+  val logbackJsonLogger: ModuleID = "uk.gov.hmrc" %% "logback-json-logger" % logbackJsonLoggerVersion
 }
