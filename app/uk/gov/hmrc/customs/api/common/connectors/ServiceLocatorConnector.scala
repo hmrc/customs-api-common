@@ -25,11 +25,10 @@ import uk.gov.hmrc.customs.api.common.domain.Registration
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ServiceLocatorConnector @Inject()(servicesConfig: ServicesConfig, http: HttpClient) {
+class ServiceLocatorConnector @Inject()(servicesConfig: ServicesConfig, http: HttpClient)(implicit ec: ExecutionContext) {
 
   val appName = servicesConfig.getString("appName")
   val appUrl = servicesConfig.getString("appUrl")
