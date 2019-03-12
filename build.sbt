@@ -111,10 +111,9 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] = sbtrelease.ReleasePlugin.
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapPlay25, xmlResolver, cats, xerces)
+val compileDependencies = Seq(bootstrapPlay25, xmlResolver, cats)
 
-val testDependencies = Seq(hmrcTest, scalaTest, pegDown,
-  scalaTestPlusPlay, wireMock, mockito)
+val testDependencies = Seq(hmrcTest, scalaTest, scalaTestPlusPlay, wireMock, mockito)
 
 unmanagedResourceDirectories in Compile += baseDirectory.value / "public"
 
