@@ -45,9 +45,6 @@ class DocumentationControllerSpec extends IntegrationTestSpec with MockitoSugar 
         "application.logger.name" -> "customs-api-common",
         "appName" -> "customs-wco-declaration",
         "appUrl" -> "http://customs-wco-declaration.service",
-        "microservice.services.service-locator.host" -> ExternalServicesConfig.Host,
-        "microservice.services.service-locator.port" -> ExternalServicesConfig.Port,
-        "microservice.services.service-locator.enabled" -> false,
         "auditing.enabled" -> false,
         "auditing.traceRequests" -> false
       )

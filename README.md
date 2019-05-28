@@ -30,43 +30,6 @@ And add this to `build.sbt`
 
 Ensure that sbt version is at least 0.13.12 (due to this [bug](https://github.com/sbt/sbt/issues/2002))
 
-### application.conf
-Make sure you have the following entries
-
-    application.logger.name="YOUR_APP_LOGGER_NAME"
-
-    microservice {
-      ...      
-      services {
-        ...    
-        service-locator {
-          enabled = false
-        }
-      }
-    }
-      
-    # Play Modules
-    # ~~~~
-    # Additional play modules can be added here
-    play.modules.enabled += "uk.gov.hmrc.customs.api.common.CustomsApiCommonModule"
-
-    play.http.errorHandler = "uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler"
-    
-For more details on configuration see [here](https://github.com/hmrc/bootstrap-play-25/). 
-
-#### Configure Service Locator
-
-If in managed environments your service is publicly accessible then you should enable service locator 
- with something like this (note that `enabled` defaults to `true`):
- 
-    service-locator {
-      host = service-locator.some.host
-      port = 80
-    }
- 
-Otherwise if your service is not public you should disable `service-locator` as shown for in `application.conf` section above.  
-
-
 ##To add Dynamic Service Configuration
 Add configuration in your 'application.conf', additional environments are added to the service.
 Dynamic service configuration may be used for stubs as well as other environments
