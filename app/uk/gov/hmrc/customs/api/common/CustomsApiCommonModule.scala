@@ -18,13 +18,11 @@ package uk.gov.hmrc.customs.api.common
 
 import play.api.inject.{Binding, Module}
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.customs.api.common.services.ServiceLocatorRegistrationService
 import uk.gov.hmrc.play.bootstrap.http.{DefaultHttpClient, HttpClient}
 
 class CustomsApiCommonModule extends Module {
 
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
-    bind[ServiceLocatorRegistrationService].toSelf.eagerly(),
     bind[HttpClient].to[DefaultHttpClient]
   )
 
