@@ -30,6 +30,27 @@ And add this to `build.sbt`
 
 Ensure that sbt version is at least 0.13.12 (due to this [bug](https://github.com/sbt/sbt/issues/2002))
 
+### application.conf
+Make sure you have the following entries
+
+    application.logger.name="YOUR_APP_LOGGER_NAME"
+
+    microservice {
+      ...      
+      services {
+        ...
+      }
+    }
+      
+    # Play Modules
+    # ~~~~
+    # Additional play modules can be added here
+    play.modules.enabled += "uk.gov.hmrc.customs.api.common.CustomsApiCommonModule"
+
+    play.http.errorHandler = "uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler"
+    
+For more details on configuration see [here](https://github.com/hmrc/bootstrap-play-25/). 
+
 ##To add Dynamic Service Configuration
 Add configuration in your 'application.conf', additional environments are added to the service.
 Dynamic service configuration may be used for stubs as well as other environments
