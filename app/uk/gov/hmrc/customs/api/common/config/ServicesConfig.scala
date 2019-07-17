@@ -17,10 +17,10 @@
 package uk.gov.hmrc.customs.api.common.config
 
 import javax.inject.{Inject, Singleton}
-import play.api.{Configuration, Environment}
+import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.RunMode
 
 @Singleton
-class ServicesConfig @Inject() (override val runModeConfiguration: Configuration,
-                                environment: Environment) extends uk.gov.hmrc.play.config.ServicesConfig {
-  override protected def mode = environment.mode
+class ServicesConfig @Inject() (configuration: Configuration, runMode: RunMode)
+  extends uk.gov.hmrc.play.bootstrap.config.ServicesConfig(configuration, runMode) {
 }
