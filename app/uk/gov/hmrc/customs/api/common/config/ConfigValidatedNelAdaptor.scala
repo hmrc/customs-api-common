@@ -21,6 +21,7 @@ import cats.data.Validated.{Invalid, Valid}
 import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import scala.concurrent.duration.Duration
 
