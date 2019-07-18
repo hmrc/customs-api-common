@@ -22,5 +22,3 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.0")
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 
 addSbtPlugin("net.vonbuchholtz" % "sbt-dependency-check" % "1.1.0")
-
-addSbtPlugin("uk.gov.hmrc" % "sbt-play-cross-compilation" % "0.17.0")
