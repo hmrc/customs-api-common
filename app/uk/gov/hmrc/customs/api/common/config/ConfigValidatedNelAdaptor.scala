@@ -95,22 +95,17 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
       validatedNel(servicesConfig.getDuration(key))
 
     def maybeString(key: String): CustomsValidatedNel[Option[String]] = {
-//      Valid(configuration.get[Option[String]](key))
-      Valid(configuration.getString(key))
+      Valid(configuration.getOptional[String](key))
     }
 
     override def stringSeq(key: String): CustomsValidatedNel[Seq[String]] = {
-//      val seq: Seq[String] = configuration.get[Option[Seq[String]]](key).getOrElse(Nil)
-      val seq: Seq[String] = configuration.getStringSeq(key).getOrElse(Nil)
+      val seq: Seq[String] = configuration.getOptional[Seq[String]](key).getOrElse(Nil)
       Valid(seq)
     }
   }
 
   private def validatedNel[T](f: => T): CustomsValidatedNel[T] = {
-    Validated.catchNonFatal(f).leftMap[String](e => {
-      println("xxxx=>" + e.getMessage)
-      e.getMessage
-    }).toValidatedNel
+    Validated.catchNonFatal(f).leftMap[String](e => e.getMessage).toValidatedNel
   }
 
   private case class ServiceConfigReader(serviceName: String) extends ValidatedNelAdaptor with UrlNelAdaptor {
@@ -133,12 +128,8 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
     override def serviceUrl: CustomsValidatedNel[String] = {
       def url(base: String, context: String) = s"$base$context"
 
-      val contextNel: CustomsValidatedNel[String] = string("context").andThen { context =>
-        if (context.startsWith("/")) {
-          Valid(context).toValidatedNel
-        } else {
-          Invalid(s"For service '$serviceName' context '$context' does not start with '/'").toValidatedNel
-        }
+      val contextNel: CustomsValidatedNel[String] = string("context") andThen { context =>
+        if (context.startsWith("/")) Valid(context).toValidatedNel else Invalid(s"For service '$serviceName' context '$context' does not start with '/'").toValidatedNel
       }
 
       (baseUrl, contextNel).mapN(url)

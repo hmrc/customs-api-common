@@ -18,8 +18,8 @@ package integration
 
 import java.io.FileNotFoundException
 
-import org.scalatest.mockito.MockitoSugar
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
 import play.api.mvc.Result
@@ -29,7 +29,7 @@ import uk.gov.hmrc.play.bootstrap.{AuditModule, MicroserviceModule}
 
 import scala.concurrent.Future
 
-class DocumentationControllerSpec extends IntegrationTestSpec with MockitoSugar with OneAppPerSuite {
+class DocumentationControllerSpec extends IntegrationTestSpec with MockitoSugar with GuiceOneAppPerSuite {
 
   private implicit lazy val materializer = app.materializer
 

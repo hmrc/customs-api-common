@@ -116,9 +116,9 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
     "return error when value is of wrong type" in {
       emailNelAdaptor.int("string-key") shouldBe Invalid("Configuration error[String: 15: Test.microservice.services.email.string-key has type STRING rather than NUMBER]").toValidatedNel
     }
-//    "return error when a field is null" in {
-//      nullContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("Configuration error[String: 14: Configuration key 'Test.microservice.services.email.context' is set to null but expected STRING]").toValidatedNel
-//    }
+    "return error when a field is null" in {
+      nullContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("Service configuration not found for key: email.context").toValidatedNel
+    }
     "return error when context does not start with a '/'" in {
       prefixMissingContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("For service 'email' context 'context' does not start with '/'").toValidatedNel
     }
