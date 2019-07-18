@@ -18,25 +18,24 @@ package uk.gov.hmrc.customs.api.common.controllers.dynamicservice
 
 import com.google.inject.Inject
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 class DynamicServiceConfigurationController @Inject()(serviceConfigProvider: ServiceConfigProvider,
                                                       cc: ControllerComponents)
-  extends BaseController {
+  extends BackendController(cc) {
 
-  protected override def controllerComponents: ControllerComponents = cc
   private implicit val rds = Json.reads[ServiceConfigDto]
   private implicit val wrt = Json.writes[ViewServiceConfigDto]
 
-  def setConfigurationForService(service: String): Action[AnyContent] = Action {
-    request =>
-      request.body.asJson.get.validate[ServiceConfigDto] match {
-        case success: JsSuccess[ServiceConfigDto] =>
-          val dto = success.value
-          setEnvironmentForService(service, dto.environment)
-        case _: JsError => BadRequest("no environment was provided")
-      }
+  def setConfigurationForService(service: String): Action[AnyContent] = Action { request =>
+    request.body.asJson.get.validate[ServiceConfigDto] match {
+      case success: JsSuccess[ServiceConfigDto] =>
+        val dto = success.value
+        setEnvironmentForService(service, dto.environment)
+      case _: JsError => BadRequest("no environment was provided")
+    }
   }
 
   def getConfigurationForService(service: String): Action[AnyContent] = Action { request =>
