@@ -20,13 +20,13 @@ import cats.Applicative
 import cats.data.Validated.{Invalid, Valid}
 import com.typesafe.config.{Config, ConfigFactory}
 import org.scalatest.Matchers
-import org.scalatest.mockito.MockitoSugar
-import play.api.{Configuration, Environment}
-import uk.gov.hmrc.customs.api.common.config.{ConfigValidatedNelAdaptor, CustomsValidatedNel, ServicesConfig}
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.{Configuration, Mode}
+import uk.gov.hmrc.customs.api.common.config.{ConfigValidatedNelAdaptor, CustomsValidatedNel}
+import uk.gov.hmrc.play.bootstrap.config.{RunMode, ServicesConfig}
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.duration.DurationInt
-
 
 class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matchers {
 
@@ -58,11 +58,9 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
   private val validAppConfig: Config = appConfig("/context")
   private val prefixMissingContextConfig: Config = appConfig("context")
   private val nullContextConfig: Config = appConfig("null")
-
-  private def testServicesConfig(configuration: Config) = new ServicesConfig(new Configuration(configuration), mock[Environment]) {
-    override val mode = play.api.Mode.Test
-  }
-
+  
+  private def testServicesConfig(configuration: Config) = new ServicesConfig(new Configuration(configuration), new RunMode(new Configuration(configuration), Mode.Test)) {}
+  
   private val configValidatedNelAdaptor = new ConfigValidatedNelAdaptor(testServicesConfig(validAppConfig), new Configuration(validAppConfig))
   private val prefixMissingContextNelAdaptor = new ConfigValidatedNelAdaptor(testServicesConfig(prefixMissingContextConfig), new Configuration(prefixMissingContextConfig))
   private val nullContextNelAdaptor = new ConfigValidatedNelAdaptor(testServicesConfig(nullContextConfig), new Configuration(nullContextConfig))
@@ -119,7 +117,7 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
       emailNelAdaptor.int("string-key") shouldBe Invalid("Configuration error[String: 15: Test.microservice.services.email.string-key has type STRING rather than NUMBER]").toValidatedNel
     }
     "return error when a field is null" in {
-      nullContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("Configuration error[String: 14: Configuration key 'Test.microservice.services.email.context' is set to null but expected STRING]").toValidatedNel
+      nullContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("Service configuration not found for key: email.context").toValidatedNel
     }
     "return error when context does not start with a '/'" in {
       prefixMissingContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("For service 'email' context 'context' does not start with '/'").toValidatedNel

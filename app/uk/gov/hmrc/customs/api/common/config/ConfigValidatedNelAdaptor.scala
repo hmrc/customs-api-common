@@ -21,6 +21,7 @@ import cats.data.Validated.{Invalid, Valid}
 import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import scala.concurrent.duration.Duration
 
@@ -94,11 +95,11 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
       validatedNel(servicesConfig.getDuration(key))
 
     def maybeString(key: String): CustomsValidatedNel[Option[String]] = {
-      Valid(configuration.getString(key))
+      Valid(configuration.getOptional[String](key))
     }
 
     override def stringSeq(key: String): CustomsValidatedNel[Seq[String]] = {
-      val seq: Seq[String] = configuration.getStringSeq(key).getOrElse(Nil)
+      val seq: Seq[String] = configuration.getOptional[Seq[String]](key).getOrElse(Nil)
       Valid(seq)
     }
   }
@@ -127,7 +128,7 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
     override def serviceUrl: CustomsValidatedNel[String] = {
       def url(base: String, context: String) = s"$base$context"
 
-      val contextNel: CustomsValidatedNel[String] = string("context").andThen{context =>
+      val contextNel: CustomsValidatedNel[String] = string("context") andThen { context =>
         if (context.startsWith("/")) Valid(context).toValidatedNel else Invalid(s"For service '$serviceName' context '$context' does not start with '/'").toValidatedNel
       }
 

@@ -20,7 +20,7 @@ import java.net.URL
 
 import javax.inject.Inject
 import org.openqa.selenium.{By, WebDriver}
-import uk.gov.hmrc.customs.api.common.config.ServicesConfig
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 class AccessTokenService @Inject() (servicesConfig: ServicesConfig) {
 

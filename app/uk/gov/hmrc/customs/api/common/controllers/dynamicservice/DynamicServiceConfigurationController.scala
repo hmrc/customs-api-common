@@ -17,11 +17,14 @@
 package uk.gov.hmrc.customs.api.common.controllers.dynamicservice
 
 import com.google.inject.Inject
-import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider}
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
-class DynamicServiceConfigurationController @Inject()(serviceConfigProvider: ServiceConfigProvider) extends Controller {
+class DynamicServiceConfigurationController @Inject()(serviceConfigProvider: ServiceConfigProvider,
+                                                      cc: ControllerComponents)
+  extends BackendController(cc) {
 
   private implicit val rds = Json.reads[ServiceConfigDto]
   private implicit val wrt = Json.writes[ViewServiceConfigDto]
