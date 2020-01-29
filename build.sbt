@@ -2,8 +2,9 @@ import AppDependencies._
 import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
-import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings, scalaSettings, targetJvm}
+import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, targetJvm}
 import uk.gov.hmrc.PublishingSettings._
+import uk.gov.hmrc.gitstamp.GitStampPlugin._
 
 import scala.language.postfixOps
 
@@ -39,7 +40,7 @@ lazy val microservice = (project in file("."))
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
   .configs(testConfig: _*)
   .settings(
-    commonSettings,
+    gitStampSettings,
     unitTestSettings,
     integrationTestSettings,
     componentTestSettings,
@@ -47,8 +48,10 @@ lazy val microservice = (project in file("."))
     playPublishingSettings,
     allTest,
     scoverageSettings
-  ).settings(majorVersion := 1)
+  )
+  .settings(majorVersion := 1)
   .settings(makePublicallyAvailableOnBintray := true)
+  .settings(scalaVersion := "2.12.10")
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
@@ -100,11 +103,7 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
 
-lazy val commonSettings: Seq[Setting[_]] = scalaSettings ++
-  defaultSettings() ++
-  gitStampSettings
-
-lazy val playPublishingSettings: Seq[sbt.Setting[_]] = sbtrelease.ReleasePlugin.releaseSettings ++
+lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   Seq(credentials += SbtCredentials) ++
   publishAllArtefacts
 
