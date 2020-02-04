@@ -95,7 +95,7 @@ lazy val endtoendTestSettings =
 
 lazy val scoverageSettings: Seq[Setting[_]] = Seq(
   coverageExcludedPackages := "<empty>;.*(Reverse|AuthService|BuildInfo|Routes).*",
-  coverageMinimum := 98,
+  coverageMinimum := 96,
   coverageFailOnMinimum := true,
   coverageHighlighting := true,
   parallelExecution in Test := false
