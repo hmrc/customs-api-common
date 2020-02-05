@@ -4,7 +4,7 @@ object AppDependencies {
 
   private val bootstrapPlay26Version = "1.3.0"
   private val xmlResolverVersion = "1.2"
-  private val catsVersion = "2.1.0"
+  private val catsVersion = "2.0.0"
   private val hmrcTestVersion = "3.9.0-play-26"
   private val scalaTestVersion = "3.0.8"
   private val scalatestplusVersion = "3.1.2"
