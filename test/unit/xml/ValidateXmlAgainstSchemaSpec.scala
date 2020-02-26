@@ -17,6 +17,7 @@
 package unit.xml
 
 import javax.xml.validation.Schema
+import uk.gov.hmrc.customs.api.common.config.InvalidEnvironmentException
 import uk.gov.hmrc.customs.api.common.xml.ValidateXmlAgainstSchema
 import uk.gov.hmrc.play.test.UnitSpec
 
@@ -30,6 +31,14 @@ class ValidateXmlAgainstSchemaSpec extends UnitSpec {
 
       val validSchema = ValidateXmlAgainstSchema.getSchema("/xml/schema_example.xsd")
       validSchema.isSuccess shouldBe true
+    }
+
+    "not accept a max error < 1" in {
+      val validator = new ValidateXmlAgainstSchema(getSchema())
+
+      intercept[IllegalArgumentException] {
+        validator.validateWithErrors(getInvalidXmlSource(), 0)
+      }
     }
 
     "validate a valid schema" in {
