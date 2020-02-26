@@ -116,6 +116,7 @@ val compileDependencies = Seq(bootstrapPlay26, cats)
 val testDependencies = Seq(hmrcTest, scalaTest, scalaTestPlusPlay, wireMock, mockito)
 
 unmanagedResourceDirectories in Compile += baseDirectory.value / "public"
+unmanagedResourceDirectories in Test += baseDirectory.value / "test" / "resources"
 
 libraryDependencies ++= compileDependencies ++ testDependencies
 
