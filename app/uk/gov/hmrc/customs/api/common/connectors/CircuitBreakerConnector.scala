@@ -20,39 +20,39 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 
 import akka.actor.ActorSystem
 import akka.pattern.CircuitBreaker
-import com.google.inject._
 import uk.gov.hmrc.customs.api.common.logging.CdsLogger
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
-abstract class CircuitBreakerConnector @Inject() (
-    numberOfCallsToTriggerStateChange: Int,
-    unstablePeriodDurationInMillis: Int,
-    unavailablePeriodDurationInMillis: Int,
-    logger: CdsLogger,
-    actorSystem: ActorSystem)
-    (implicit ec: ExecutionContext) {
+trait CircuitBreakerConnector {
   protected val configKey: String
+  protected val numberOfCallsToTriggerStateChange: Int
+  protected val unstablePeriodDurationInMillis: Int
+  protected val unavailablePeriodDurationInMillis: Int
+
+  protected val cdsLogger: CdsLogger
+  protected val actorSystem: ActorSystem
+  implicit val ec: ExecutionContext
 
   protected def breakOnException(t: Throwable): Boolean = true
 
   final def withCircuitBreaker[T](body: => Future[T]): Future[T] =
     breaker.withCircuitBreaker(body, defineFailure)
 
-  logger.info(s"Circuit Breaker [$configKey] instance created with config: numberOfCallsToTriggerStateChange: $numberOfCallsToTriggerStateChange, unstablePeriodDurationInMillis: $unstablePeriodDurationInMillis, unavailablePeriodDurationInMillis: $unavailablePeriodDurationInMillis")
+  cdsLogger.info(s"Circuit Breaker [$configKey] instance created with config: numberOfCallsToTriggerStateChange: $numberOfCallsToTriggerStateChange, unstablePeriodDurationInMillis: $unstablePeriodDurationInMillis, unavailablePeriodDurationInMillis: $unavailablePeriodDurationInMillis")
   private lazy val breaker = new CircuitBreaker(
     scheduler = actorSystem.scheduler,
     maxFailures = numberOfCallsToTriggerStateChange,
     callTimeout = Duration(unstablePeriodDurationInMillis, MILLISECONDS),
     resetTimeout = Duration(unavailablePeriodDurationInMillis, MILLISECONDS))
-      .onOpen(notifyOnStateChange("Open"))
-      .onClose(notifyOnStateChange("Close"))
-      .onHalfOpen(notifyOnStateChange("HalfOpen"))
+    .onOpen(notifyOnStateChange("Open"))
+    .onClose(notifyOnStateChange("Close"))
+    .onHalfOpen(notifyOnStateChange("HalfOpen"))
 
   private def notifyOnStateChange(newState: String): Unit =
-    logger.warn(s"circuitbreaker: Service [$configKey] is in state [${newState}]")
+    cdsLogger.warn(s"circuitbreaker: Service [$configKey] is in state [${newState}]")
 
   private def defineFailure(t: Try[_]): Boolean =
     t.isFailure && breakOnException(t.failed.get)
