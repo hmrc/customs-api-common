@@ -47,9 +47,9 @@ trait CircuitBreakerConnector {
     maxFailures = numberOfCallsToTriggerStateChange,
     callTimeout = Duration(unstablePeriodDurationInMillis, MILLISECONDS),
     resetTimeout = Duration(unavailablePeriodDurationInMillis, MILLISECONDS))
-    .onOpen(notifyOnStateChange("Open"))
-    .onClose(notifyOnStateChange("Close"))
-    .onHalfOpen(notifyOnStateChange("HalfOpen"))
+      .onOpen(notifyOnStateChange("Open"))
+      .onClose(notifyOnStateChange("Close"))
+      .onHalfOpen(notifyOnStateChange("HalfOpen"))
 
   private def notifyOnStateChange(newState: String): Unit =
     cdsLogger.warn(s"circuitbreaker: Service [$configKey] is in state [${newState}]")
