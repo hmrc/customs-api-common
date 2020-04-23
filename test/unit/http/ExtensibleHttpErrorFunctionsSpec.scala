@@ -22,8 +22,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.{HeaderNames, MimeTypes}
 import uk.gov.hmrc.customs.api.common.http.ExtensibleHttpErrorFunctions
 import uk.gov.hmrc.http.{HttpException, HttpReads, HttpResponse}
-import uk.gov.hmrc.play.test.UnitSpec
-import util.WireMockRunner
+import util.{UnitSpec, WireMockRunner}
 
 class ExtensibleHttpErrorFunctionsSpec extends UnitSpec with MockitoSugar with WireMockRunner{
 

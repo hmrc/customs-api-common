@@ -21,10 +21,9 @@ publishArtifact in (Test, packageSrc) := true
 publishArtifact in (Compile, packageSrc) := true
 
 lazy val ComponentTest = config("component") extend Test
-lazy val EndToEndTest = config("endtoend") extend Test
 lazy val CdsIntegrationTest = config("it") extend Test
 
-val testConfig = Seq(EndToEndTest, ComponentTest, CdsIntegrationTest, Test)
+val testConfig = Seq(ComponentTest, CdsIntegrationTest, Test)
 
 def forkedJvmPerTestConfig(tests: Seq[TestDefinition], packages: String*): Seq[Group] =
   tests.groupBy(_.name.takeWhile(_ != '.')).filter(packageAndTests => packages contains packageAndTests._1) map {
@@ -35,7 +34,7 @@ def forkedJvmPerTestConfig(tests: Seq[TestDefinition], packages: String*): Seq[G
 lazy val testAll = TaskKey[Unit]("test-all")
 lazy val allTest = Seq( testAll := (test in ComponentTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
 
-val ScalaVer_2_12 = "2.12.10"
+val ScalaVer_2_12 = "2.12.11"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
@@ -46,7 +45,6 @@ lazy val microservice = (project in file("."))
     unitTestSettings,
     integrationTestSettings,
     componentTestSettings,
-    endtoendTestSettings,
     playPublishingSettings,
     allTest,
     scoverageSettings
@@ -87,15 +85,6 @@ lazy val componentTestSettings =
       addTestReportOption(ComponentTest, "component-reports")
     )
 
-lazy val endtoendTestSettings =
-  inConfig(EndToEndTest)(Defaults.testTasks) ++
-    Seq(
-      testOptions in EndToEndTest := Seq(Tests.Filter(onPackageName("endtoend"))),
-      fork in EndToEndTest := false,
-      parallelExecution in EndToEndTest := false,
-      addTestReportOption(EndToEndTest, "e2e-test-reports")
-    )
-
 lazy val scoverageSettings: Seq[Setting[_]] = Seq(
   coverageExcludedPackages := "<empty>;.*(Reverse|AuthService|BuildInfo|Routes).*",
   coverageMinimum := 90,
@@ -113,7 +102,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
 publishArtifact in Test := true
 val compileDependencies = Seq(bootstrapPlay26, cats)
 
-val testDependencies = Seq(hmrcTest, scalaTest, scalaTestPlusPlay, wireMock, mockito)
+val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
 
 unmanagedResourceDirectories in Compile += baseDirectory.value / "public"
 unmanagedResourceDirectories in Test += baseDirectory.value / "test" / "resources"

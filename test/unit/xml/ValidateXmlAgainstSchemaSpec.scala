@@ -17,9 +17,8 @@
 package unit.xml
 
 import javax.xml.validation.Schema
-import uk.gov.hmrc.customs.api.common.config.InvalidEnvironmentException
 import uk.gov.hmrc.customs.api.common.xml.ValidateXmlAgainstSchema
-import uk.gov.hmrc.play.test.UnitSpec
+import util.UnitSpec
 
 class ValidateXmlAgainstSchemaSpec extends UnitSpec {
   import ValidateXmlAgainstSchemaSpec._
