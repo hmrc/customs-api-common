@@ -16,13 +16,13 @@
 
 package unit.logger
 
-import org.mockito.{ArgumentMatcher, ArgumentMatchers}
 import org.mockito.ArgumentMatchers.{any, eq => ameq}
+import org.mockito.{ArgumentMatcher, ArgumentMatchers}
 import org.scalatest.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 import util.MockitoPassByNameHelper.PassByNameVerifier
+import util.UnitSpec
 
 class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
 

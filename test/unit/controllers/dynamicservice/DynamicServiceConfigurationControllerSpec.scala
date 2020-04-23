@@ -24,7 +24,7 @@ import play.api.test.Helpers._
 import play.api.test.{FakeRequest, Helpers}
 import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfig, ServiceConfigProvider}
 import uk.gov.hmrc.customs.api.common.controllers.dynamicservice.DynamicServiceConfigurationController
-import uk.gov.hmrc.play.test.UnitSpec
+import util.UnitSpec
 
 class DynamicServiceConfigurationControllerSpec extends UnitSpec with Matchers with MockitoSugar {
 

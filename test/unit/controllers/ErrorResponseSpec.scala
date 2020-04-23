@@ -21,7 +21,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.Json
 import play.mvc.Http.Status._
 import uk.gov.hmrc.customs.api.common.controllers.{ErrorResponse, HttpStatusCodeShortDescriptions, ResponseContents}
-import uk.gov.hmrc.play.test.UnitSpec
+import util.UnitSpec
 
 import scala.xml.Utility.trim
 import scala.xml.XML.loadString

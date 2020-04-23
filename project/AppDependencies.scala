@@ -2,14 +2,13 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlay26Version = "1.3.0"
+  private val bootstrapPlay26Version = "1.7.0"
   private val xmlResolverVersion = "1.2"
   private val catsVersion = "2.0.0"
-  private val hmrcTestVersion = "3.9.0-play-26"
-  private val scalaTestVersion = "3.0.8"
-  private val scalatestplusVersion = "3.1.2"
-  private val wireMockVersion = "2.25.1"
-  private val mockitoVersion = "3.2.0"
+  private val pegdownVersion = "1.6.0"
+  private val scalatestplusVersion = "3.1.3"
+  private val wireMockVersion = "2.26.3"
+  private val mockitoVersion = "3.3.3"
   private val testScope = "test,it"
 
   val bootstrapPlay26 = "uk.gov.hmrc" %% "bootstrap-play-26" % bootstrapPlay26Version
@@ -18,9 +17,7 @@ object AppDependencies {
 
   val cats = "org.typelevel" %% "cats-core" % catsVersion
 
-  val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % testScope
-
-  val scalaTest = "org.scalatest" %% "scalatest" % scalaTestVersion % testScope
+  val pegdown = "org.pegdown" % "pegdown" % pegdownVersion
 
   val scalaTestPlusPlay = "org.scalatestplus.play" %% "scalatestplus-play" % scalatestplusVersion % testScope
 

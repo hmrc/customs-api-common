@@ -17,7 +17,6 @@
 package unit.config
 
 import javax.inject.Provider
-import uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.Json
@@ -26,7 +25,8 @@ import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.{Configuration, Environment, Mode, OptionalSourceMapper}
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.customs.api.common.config.CustomsErrorHandler
+import util.UnitSpec
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal
@@ -274,7 +274,7 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
     fixture.CustomErrorHandler.onClientError(request, statusCode, message)
   }
 
-  private def onServerError(request: RequestHeader, thr: Throwable = ServerException)(implicit fixture: CustomErrorHandlerFixture): Future[Result] = {
+  private def onServerError(request: RequestHeader, thr: Throwable)(implicit fixture: CustomErrorHandlerFixture): Future[Result] = {
     fixture.CustomErrorHandler.onServerError(request, thr)
   }
 

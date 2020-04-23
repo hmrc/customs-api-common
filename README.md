@@ -28,8 +28,6 @@ And add this to `build.sbt`
     
     val testDependencies = Seq(..., customsApiCommonTests)
 
-Ensure that sbt version is at least 0.13.12 (due to this [bug](https://github.com/sbt/sbt/issues/2002))
-
 ### application.conf
 Make sure you have the following entries
 
