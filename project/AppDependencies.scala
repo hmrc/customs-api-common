@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlay26Version = "1.7.0"
+  private val bootstrapPlay26Version = "1.10.0"
   private val xmlResolverVersion = "1.2"
   private val catsVersion = "2.0.0"
   private val pegdownVersion = "1.6.0"
