@@ -90,6 +90,12 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
     "return None when a maybeString key is not found" in {
       configValidatedNelAdaptor.root.maybeString("ENSURE_KEY_NOT_FOUND") shouldBe Valid(None)
     }
+    "read a maybeBoolean" in {
+      configValidatedNelAdaptor.root.maybeBoolean("root-bool-key") shouldBe Valid(Some(true))
+    }
+    "return None when a maybeBoolean key is not found" in {
+      configValidatedNelAdaptor.root.maybeBoolean("ENSURE_KEY_NOT_FOUND") shouldBe Valid(None)
+    }
     "read a stringSeq" in {
       configValidatedNelAdaptor.root.stringSeq("root-string-seq-key") shouldBe Valid(Seq("element1", "element2"))
     }
