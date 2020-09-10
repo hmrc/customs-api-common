@@ -68,6 +68,7 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
 
   trait RootValidatedNelAdaptor extends ValidatedNelAdaptor {
     def maybeString(key: String): CustomsValidatedNel[Option[String]]
+    def maybeBoolean(key: String): CustomsValidatedNel[Option[Boolean]]
     def stringSeq(key: String): CustomsValidatedNel[Seq[String]]
   }
 
@@ -96,6 +97,10 @@ class ConfigValidatedNelAdaptor @Inject()(servicesConfig: ServicesConfig, config
 
     def maybeString(key: String): CustomsValidatedNel[Option[String]] = {
       Valid(configuration.getOptional[String](key))
+    }
+
+    def maybeBoolean(key: String): CustomsValidatedNel[Option[Boolean]] = {
+      Valid(configuration.getOptional[Boolean](key))
     }
 
     override def stringSeq(key: String): CustomsValidatedNel[Seq[String]] = {
