@@ -100,7 +100,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapPlay26, cats)
+val compileDependencies = Seq(bootstrapBackendPlay27, cats)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
 

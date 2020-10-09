@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.customs.api.common.config.{InvalidEnvironmentException, ServiceConfigProvider}
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 class DynamicServiceConfigurationController @Inject()(serviceConfigProvider: ServiceConfigProvider,
                                                       cc: ControllerComponents)
