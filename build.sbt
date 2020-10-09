@@ -11,7 +11,7 @@ import scala.language.postfixOps
 organization := "uk.gov.hmrc"
 
 name := "customs-api-common"
-
+scalaVersion := "2.12.10"
 targetJvm := "jvm-1.8"
 
 resolvers  ++= Seq(Resolver.bintrayRepo("hmrc", "releases"), Resolver.jcenterRepo)
@@ -34,8 +34,6 @@ def forkedJvmPerTestConfig(tests: Seq[TestDefinition], packages: String*): Seq[G
 lazy val testAll = TaskKey[Unit]("test-all")
 lazy val allTest = Seq( testAll := (test in ComponentTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
 
-val ScalaVer_2_12 = "2.12.11"
-
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
@@ -51,8 +49,6 @@ lazy val microservice = (project in file("."))
   )
   .settings(majorVersion := 1)
   .settings(makePublicallyAvailableOnBintray := true)
-  .settings(crossScalaVersions := Seq("2.11.12", ScalaVer_2_12))
-  .settings(scalaVersion := ScalaVer_2_12)
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
@@ -100,7 +96,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapPlay26, cats)
+val compileDependencies = Seq(bootstrapBackendPlay27, cats)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
 

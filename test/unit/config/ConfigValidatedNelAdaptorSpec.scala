@@ -21,9 +21,9 @@ import cats.data.Validated.{Invalid, Valid}
 import com.typesafe.config.{Config, ConfigFactory}
 import org.scalatest.Matchers
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.{Configuration, Mode}
+import play.api.Configuration
 import uk.gov.hmrc.customs.api.common.config.{ConfigValidatedNelAdaptor, CustomsValidatedNel}
-import uk.gov.hmrc.play.bootstrap.config.{RunMode, ServicesConfig}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 import util.UnitSpec
 
 import scala.concurrent.duration.DurationInt
@@ -38,18 +38,16 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
       |root-duration-key = 60seconds
       |root-string-seq-key.0 = element1
       |root-string-seq-key.1 = element2
-      |Test {
-      |  microservice {
-      |    services {
-      |      email {
-      |        host = localhost
-      |        port = 1111
-      |        context = $context
-      |        string-key = string-value
-      |        int-key = 101
-      |        bool-key = true
-      |        duration-key = 60seconds
-      |      }
+      |microservice {
+      |  services {
+      |    email {
+      |      host = localhost
+      |      port = 1111
+      |      context = $context
+      |      string-key = string-value
+      |      int-key = 101
+      |      bool-key = true
+      |      duration-key = 60seconds
       |    }
       |  }
       |}
@@ -59,7 +57,7 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
   private val prefixMissingContextConfig: Config = appConfig("context")
   private val nullContextConfig: Config = appConfig("null")
   
-  private def testServicesConfig(configuration: Config) = new ServicesConfig(new Configuration(configuration), new RunMode(new Configuration(configuration), Mode.Test)) {}
+  private def testServicesConfig(configuration: Config) = new ServicesConfig(new Configuration(configuration)) {}
   
   private val configValidatedNelAdaptor = new ConfigValidatedNelAdaptor(testServicesConfig(validAppConfig), new Configuration(validAppConfig))
   private val prefixMissingContextNelAdaptor = new ConfigValidatedNelAdaptor(testServicesConfig(prefixMissingContextConfig), new Configuration(prefixMissingContextConfig))
@@ -120,7 +118,7 @@ class ConfigValidatedNelAdaptorSpec extends UnitSpec with MockitoSugar with Matc
       emailNelAdaptor.duration("ENSURE_KEY_NOT_FOUND") shouldBe Invalid("Service configuration not found for key: email.ENSURE_KEY_NOT_FOUND").toValidatedNel
     }
     "return error when value is of wrong type" in {
-      emailNelAdaptor.int("string-key") shouldBe Invalid("Configuration error[String: 15: Test.microservice.services.email.string-key has type STRING rather than NUMBER]").toValidatedNel
+      emailNelAdaptor.int("string-key") shouldBe Invalid("Configuration error[String: 14: microservice.services.email.string-key has type STRING rather than NUMBER]").toValidatedNel
     }
     "return error when a field is null" in {
       nullContextNelAdaptor.service("email").serviceUrl shouldBe Invalid("Service configuration not found for key: email.context").toValidatedNel
