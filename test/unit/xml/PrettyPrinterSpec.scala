@@ -36,9 +36,9 @@ class PrettyPrinterSpec extends UnitSpec {
 
     "format xml with spaces inside attributes" in {
 
-      val prettyXml = PrettyPrinter.formatXml(<PreviousDocument abc="123 ABC"><CategoryCode>Z</CategoryCode><ID>ABCDCDS03111026        02</ID><TypeCode>MCR</TypeCode></PreviousDocument>)
+      val prettyXml = PrettyPrinter.formatXml(<PreviousDocument abc="123 A  B  C"><CategoryCode>Z</CategoryCode><ID>ABCDCDS03111026        02</ID><TypeCode>MCR</TypeCode></PreviousDocument>)
       prettyXml shouldBe
-        """<PreviousDocument abc="123 ABC">
+        """<PreviousDocument abc="123 A  B  C">
           |  <CategoryCode>Z</CategoryCode>
           |  <ID>ABCDCDS03111026        02</ID>
           |  <TypeCode>MCR</TypeCode>
