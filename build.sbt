@@ -11,10 +11,8 @@ import scala.language.postfixOps
 organization := "uk.gov.hmrc"
 
 name := "customs-api-common"
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.13"
 targetJvm := "jvm-1.8"
-
-resolvers  ++= Seq(Resolver.bintrayRepo("hmrc", "releases"), Resolver.jcenterRepo)
 
 publishArtifact in (Test, packageBin) := true
 publishArtifact in (Test, packageSrc) := true
@@ -35,7 +33,7 @@ lazy val testAll = TaskKey[Unit]("test-all")
 lazy val allTest = Seq( testAll := (test in ComponentTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
 
 lazy val microservice = (project in file("."))
-  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+  .enablePlugins(PlayScala)
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
   .configs(testConfig: _*)
   .settings(
@@ -48,7 +46,11 @@ lazy val microservice = (project in file("."))
     scoverageSettings
   )
   .settings(majorVersion := 1)
-  .settings(makePublicallyAvailableOnBintray := true)
+  .settings(
+    scalacOptions ++= List(
+      "-P:silencer:pathFilters=routes;TestStorage"
+    )
+  )
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
@@ -83,7 +85,7 @@ lazy val componentTestSettings =
 
 lazy val scoverageSettings: Seq[Setting[_]] = Seq(
   coverageExcludedPackages := "<empty>;.*(Reverse|AuthService|BuildInfo|Routes).*",
-  coverageMinimum := 90,
+  coverageMinimumStmtTotal := 90,
   coverageFailOnMinimum := true,
   coverageHighlighting := true,
   parallelExecution in Test := false
@@ -96,7 +98,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   publishAllArtefacts
 
 publishArtifact in Test := true
-val compileDependencies = Seq(bootstrapBackendPlay27, cats)
+val compileDependencies = Seq(bootstrapBackendPlay27, cats, silencerPlugin, silencerLib)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 package uk.gov.hmrc.customs.api.common.xml
 
 import java.io.{StringReader, StringWriter}
-
 import com.sun.org.apache.xml.internal.serialize.{OutputFormat, XMLSerializer}
+import org.w3c.dom.Document
+
 import javax.xml.parsers.DocumentBuilderFactory
 import org.xml.sax.InputSource
 
@@ -31,8 +32,8 @@ object PrettyPrinter {
 
   def formatXml(xml: NodeSeq): String = {
     lazy val db = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-    val doc = db.parse(new InputSource(new StringReader(xml.toString())))
-    val format = new OutputFormat(doc)
+    val doc: Document = db.parse(new InputSource(new StringReader(xml.toString())))
+    val format = new OutputFormat(doc.toString, "UTF-8", true)
     format.setIndenting(true)
     format.setIndent(indent)
     format.setLineWidth(lineWidth)
