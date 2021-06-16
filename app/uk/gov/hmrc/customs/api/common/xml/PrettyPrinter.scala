@@ -32,7 +32,7 @@ object PrettyPrinter {
 
   def formatXml(xml: NodeSeq): String = {
     lazy val db = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-    val doc: Document = db.parse(new InputSource(new StringReader(xml.toString())))
+    val doc = db.parse(new InputSource(new StringReader(xml.toString())))
     val format = new OutputFormat(doc.toString, "UTF-8", true)
     format.setIndenting(true)
     format.setIndent(indent)
