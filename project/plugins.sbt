@@ -7,11 +7,11 @@ addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.0.0")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.5")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.9")
 
-addSbtPlugin("uk.gov.hmrc" % "sbt-settings" % "4.5.0")
+addSbtPlugin("uk.gov.hmrc" % "sbt-settings" % "4.8.0")
 
-addSbtPlugin("uk.gov.hmrc" % "sbt-git-stamp" % "6.1.0")
+addSbtPlugin("uk.gov.hmrc" % "sbt-git-stamp" % "6.2.0")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 

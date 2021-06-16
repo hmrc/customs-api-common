@@ -8,7 +8,7 @@ object AppDependencies {
   private val pegdownVersion = "1.6.0"
   private val scalatestplusVersion = "4.0.3"
   private val wireMockVersion = "2.27.2"
-  private val mockitoVersion = "3.5.9"
+  private val mockitoVersion = "3.11.1"
   private val testScope = "test,it"
 
   val bootstrapBackendPlay27 = "uk.gov.hmrc" %% "bootstrap-backend-play-27" % bootstrapBackendPlay27Version
