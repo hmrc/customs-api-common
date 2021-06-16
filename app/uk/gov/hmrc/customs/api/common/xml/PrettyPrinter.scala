@@ -18,7 +18,6 @@ package uk.gov.hmrc.customs.api.common.xml
 
 import java.io.{StringReader, StringWriter}
 import com.sun.org.apache.xml.internal.serialize.{OutputFormat, XMLSerializer}
-import org.w3c.dom.Document
 
 import javax.xml.parsers.DocumentBuilderFactory
 import org.xml.sax.InputSource
