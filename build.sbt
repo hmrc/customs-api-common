@@ -14,9 +14,9 @@ name := "customs-api-common"
 scalaVersion := "2.12.13"
 targetJvm := "jvm-1.8"
 
-publishArtifact in (Test, packageBin) := true
-publishArtifact in (Test, packageSrc) := true
-publishArtifact in (Compile, packageSrc) := true
+Test / packageBin / publishArtifact := true
+Test / packageSrc / publishArtifact := true
+Compile / packageSrc / publishArtifact := true
 
 lazy val ComponentTest = config("component") extend Test
 lazy val CdsIntegrationTest = config("it") extend Test
@@ -30,7 +30,7 @@ def forkedJvmPerTestConfig(tests: Seq[TestDefinition], packages: String*): Seq[G
   } toSeq
 
 lazy val testAll = TaskKey[Unit]("test-all")
-lazy val allTest = Seq( testAll := (test in ComponentTest).dependsOn((test in CdsIntegrationTest).dependsOn(test in Test)).value )
+lazy val allTest = Seq( testAll := (ComponentTest / test).dependsOn((CdsIntegrationTest / test).dependsOn(Test / test)).value )
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala)
@@ -59,27 +59,26 @@ def onPackageName(rootPackage: String): String => Boolean = {
 lazy val unitTestSettings =
   inConfig(Test)(Defaults.testTasks) ++
     Seq(
-      testOptions in Test := Seq(Tests.Filter(onPackageName("unit"))),
-      unmanagedSourceDirectories in Test := Seq((baseDirectory in Test).value / "test"),
+      Test / testOptions := Seq(Tests.Filter(onPackageName("unit"))),
+      Test / unmanagedSourceDirectories := Seq((Test / baseDirectory).value / "test"),
       addTestReportOption(Test, "test-reports")
     )
 
 lazy val integrationTestSettings =
   inConfig(CdsIntegrationTest)(Defaults.testTasks) ++
     Seq(
-      testOptions in CdsIntegrationTest := Seq(Tests.Filters(Seq(onPackageName("integration"), onPackageName("component")))),
-      fork in CdsIntegrationTest := false,
-      parallelExecution in CdsIntegrationTest := false,
+      CdsIntegrationTest / testOptions := Seq(Tests.Filters(Seq(onPackageName("integration"), onPackageName("component")))),
+      CdsIntegrationTest / parallelExecution := false,
       addTestReportOption(CdsIntegrationTest, "int-test-reports"),
-      testGrouping in CdsIntegrationTest := forkedJvmPerTestConfig((definedTests in Test).value, "integration", "component")
+      CdsIntegrationTest / testGrouping := forkedJvmPerTestConfig((Test / definedTests).value, "integration", "component")
     )
 
 lazy val componentTestSettings =
   inConfig(ComponentTest)(Defaults.testTasks) ++
     Seq(
-      testOptions in ComponentTest := Seq(Tests.Filter(onPackageName("component"))),
-      fork in ComponentTest := false,
-      parallelExecution in ComponentTest := false,
+      ComponentTest / testOptions := Seq(Tests.Filter(onPackageName("component"))),
+      ComponentTest / fork := false,
+      ComponentTest / parallelExecution := false,
       addTestReportOption(ComponentTest, "component-reports")
     )
 
@@ -88,7 +87,7 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
   coverageMinimumStmtTotal := 90,
   coverageFailOnMinimum := true,
   coverageHighlighting := true,
-  parallelExecution in Test := false
+  Test / parallelExecution := false
 )
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
@@ -97,14 +96,12 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   Seq(credentials += SbtCredentials) ++
   publishAllArtefacts
 
-publishArtifact in Test := true
 val compileDependencies = Seq(bootstrapBackendPlay27, cats, silencerPlugin, silencerLib)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
 
-unmanagedResourceDirectories in Compile += baseDirectory.value / "public"
-unmanagedResourceDirectories in Test += baseDirectory.value / "test" / "resources"
+Compile / unmanagedResourceDirectories += baseDirectory.value / "public"
+Test / unmanagedResourceDirectories += baseDirectory.value / "test" / "resources"
 
 libraryDependencies ++= compileDependencies ++ testDependencies
 
-evictionWarningOptions in update := EvictionWarningOptions.default.withWarnTransitiveEvictions(false)
