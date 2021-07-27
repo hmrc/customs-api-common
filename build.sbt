@@ -96,7 +96,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
   Seq(credentials += SbtCredentials) ++
   publishAllArtefacts
 
-val compileDependencies = Seq(bootstrapBackendPlay27, cats, silencerPlugin, silencerLib)
+val compileDependencies = Seq(bootstrapBackendPlay28, cats, silencerPlugin, silencerLib)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark)
 

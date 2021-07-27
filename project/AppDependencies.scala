@@ -11,7 +11,7 @@ object AppDependencies {
   private val mockitoVersion = "3.11.1"
   private val testScope = "test,it"
 
-  val bootstrapBackendPlay27 = "uk.gov.hmrc" %% "bootstrap-backend-play-28" % bootstrapBackendPlay28Version
+  val bootstrapBackendPlay28 = "uk.gov.hmrc" %% "bootstrap-backend-play-28" % bootstrapBackendPlay28Version
   
   val xmlResolver = "xml-resolver" % "xml-resolver" % xmlResolverVersion
 
