@@ -15,8 +15,9 @@
  */
 
 package component
-
-import org.scalatest.{BeforeAndAfterEach, FeatureSpec, GivenWhenThen, Matchers}
+import org.scalatest.featurespec.AnyFeatureSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterEach, GivenWhenThen}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.libs.json.Json
@@ -24,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import util.DynamicServiceTestData
 
-class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with DynamicServiceTestData {
+class DynamicServiceConfigurationSpec extends AnyFeatureSpec with GivenWhenThen with Matchers with GuiceOneAppPerSuite with BeforeAndAfterEach with DynamicServiceTestData {
 
   override implicit lazy val app: Application = configuredApplication
 
@@ -35,9 +36,9 @@ class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen wit
     route(app, request)
   }
 
-  feature("Changing environment for service") {
+  Feature("Changing environment for service") {
 
-    scenario("Environment is not found in configuration for service") {
+    Scenario("Environment is not found in configuration for service") {
       Given("A service does not have a configuration entry for the specified environment")
       val environment = "missingenv"
 
@@ -51,7 +52,7 @@ class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen wit
       contentAsString(res) shouldBe s"No configuration was found for service $validService in environment $environment"
     }
 
-    scenario("Environment is found in configuration for service") {
+    Scenario("Environment is found in configuration for service") {
       Given("A service has a configuration for the specified environment")
 
       When("A request to change the environment is received")
@@ -65,8 +66,8 @@ class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen wit
     }
   }
 
-  feature("Getting current service configuration") {
-    scenario("Service does not have a configuration entry") {
+  Feature("Getting current service configuration") {
+    Scenario("Service does not have a configuration entry") {
       Given("A service does not have a configuration entry")
 
       When("Getting the current configuration")
@@ -77,7 +78,7 @@ class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen wit
       status(res) shouldBe NOT_FOUND
     }
 
-    scenario("Service has a configuration entry") {
+    Scenario("Service has a configuration entry") {
       Given("A service has a configuration entry")
 
       When("Getting the current configuration")
@@ -97,7 +98,7 @@ class DynamicServiceConfigurationSpec extends FeatureSpec with GivenWhenThen wit
       }
     }
 
-    scenario("Service without bearer token") {
+    Scenario("Service without bearer token") {
       Given("A service has a configuration entry with no bearer token")
 
       When("Getting the current configuration")
