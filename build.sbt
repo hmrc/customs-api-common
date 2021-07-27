@@ -98,7 +98,7 @@ lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
 
 val compileDependencies = Seq(bootstrapBackendPlay27, cats, silencerPlugin, silencerLib)
 
-val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito)
+val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark)
 
 Compile / unmanagedResourceDirectories += baseDirectory.value / "public"
 Test / unmanagedResourceDirectories += baseDirectory.value / "test" / "resources"

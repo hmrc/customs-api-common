@@ -18,7 +18,7 @@ package unit.logger
 
 import org.mockito.ArgumentMatchers.{any, eq => ameq}
 import org.mockito.{ArgumentMatcher, ArgumentMatchers}
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
 import util.MockitoPassByNameHelper.PassByNameVerifier

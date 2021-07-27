@@ -17,7 +17,7 @@
 package unit.controllers.dynamicservice
 
 import org.mockito.Mockito._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.Helpers._
