@@ -3,7 +3,6 @@ import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, targetJvm}
-import uk.gov.hmrc.PublishingSettings._
 import uk.gov.hmrc.gitstamp.GitStampPlugin._
 
 import scala.language.postfixOps
@@ -41,7 +40,6 @@ lazy val microservice = (project in file("."))
     unitTestSettings,
     integrationTestSettings,
     componentTestSettings,
-    playPublishingSettings,
     allTest,
     scoverageSettings
   )
@@ -91,10 +89,6 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 )
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
-
-lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
-  Seq(credentials += SbtCredentials) ++
-  publishAllArtefacts
 
 val compileDependencies = Seq(bootstrapBackendPlay28, cats, silencerPlugin, silencerLib)
 
