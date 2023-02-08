@@ -3,7 +3,6 @@ import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, targetJvm}
-import uk.gov.hmrc.PublishingSettings._
 import uk.gov.hmrc.gitstamp.GitStampPlugin._
 
 import scala.language.postfixOps
@@ -11,7 +10,7 @@ import scala.language.postfixOps
 organization := "uk.gov.hmrc"
 
 name := "customs-api-common"
-scalaVersion := "2.12.13"
+scalaVersion := "2.13.10"
 targetJvm := "jvm-1.8"
 
 Test / packageBin / publishArtifact := true
@@ -41,16 +40,11 @@ lazy val microservice = (project in file("."))
     unitTestSettings,
     integrationTestSettings,
     componentTestSettings,
-    playPublishingSettings,
     allTest,
-    scoverageSettings
+    scoverageSettings,
+    libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
   )
   .settings(majorVersion := 1)
-  .settings(
-    scalacOptions ++= List(
-      "-P:silencer:pathFilters=routes;TestStorage"
-    )
-  )
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
@@ -92,11 +86,7 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
 
-lazy val playPublishingSettings: Seq[sbt.Setting[_]] =
-  Seq(credentials += SbtCredentials) ++
-  publishAllArtefacts
-
-val compileDependencies = Seq(bootstrapBackendPlay28, cats, silencerPlugin, silencerLib)
+val compileDependencies = Seq(bootstrapBackendPlay28, cats)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,16 +26,16 @@ trait WireMockRunner {
   lazy val wireMockUrl = s"http://$Host:$Port"
   lazy val wireMockServer = new WireMockServer(wireMockConfig().port(Port))
 
-  def startMockServer() {
+  def startMockServer(): Unit = {
     if (!wireMockServer.isRunning) wireMockServer.start()
     WireMock.configureFor(Host, Port)
   }
 
-  def stopMockServer() {
+  def stopMockServer(): Unit = {
     wireMockServer.stop()
   }
 
-  def resetMockServer() {
+  def resetMockServer(): Unit = {
     wireMockServer.resetAll()
   }
 

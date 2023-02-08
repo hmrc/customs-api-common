@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class DynamicServiceConfigurationSpec extends AnyFeatureSpec with GivenWhenThen 
 
   override implicit lazy val app: Application = configuredApplication
 
-  override def beforeEach: Unit ={
+  override def beforeEach(): Unit ={
     val request = FakeRequest(POST, s"/$validService/configuration").
       withJsonBody(Json.parse("""{"environment": "default"}"""))
 

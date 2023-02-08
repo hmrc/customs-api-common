@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
         val mockFoo = mock[Foo]
         val someClass = new SomeClass
 
-        mockFoo.fooWithClass(someClass, () => ())
+        mockFoo.fooWithClass(someClass, ())
 
         PassByNameVerifier(mockFoo, "fooWithClass")
           .withParamMatcher(ameq(someClass))

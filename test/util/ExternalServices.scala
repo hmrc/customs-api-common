@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ trait RegistrationService extends WireMockRunner {
 
   val RegistrationPath = urlMatching("/registration")
 
-  def registrationServiceIsRunning() {
+  def registrationServiceIsRunning(): Unit = {
     stubFor(post(RegistrationPath).
       withHeader(CONTENT_TYPE, equalTo(JSON)).
       willReturn(
@@ -36,13 +36,13 @@ trait RegistrationService extends WireMockRunner {
           .withStatus(NO_CONTENT)))
   }
 
-  def verifyRegistrationServiceWasCalledFor(json: JsValue) {
+  def verifyRegistrationServiceWasCalledFor(json: JsValue): Unit = {
     verify(1, postRequestedFor(RegistrationPath)
       .withHeader(CONTENT_TYPE, equalTo(JSON))
       .withRequestBody(equalTo(json.toString)))
   }
 
-  def noRequestWasMadeToRegistrationService() {
+  def noRequestWasMadeToRegistrationService(): Unit = {
     verify(0, postRequestedFor(RegistrationPath))
   }
 }

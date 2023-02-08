@@ -3,21 +3,15 @@ resolvers += Resolver.url("HMRC-open-artefacts-ivy", url("https://open.artefacts
 resolvers += Resolver.jcenterRepo
 resolvers += "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.0.0")
+ThisBuild / libraryDependencySchemes ++= Seq(
+  "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
+)
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
-
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.8")
-
-addSbtPlugin("uk.gov.hmrc" % "sbt-settings" % "4.8.0")
-
-addSbtPlugin("uk.gov.hmrc" % "sbt-git-stamp" % "6.2.0")
-
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
-
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.8.1")
-
-addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
-
-addSbtPlugin("net.vonbuchholtz" % "sbt-dependency-check" % "1.1.0")
+addSbtPlugin("uk.gov.hmrc"       %  "sbt-auto-build"        % "3.9.0")
+addSbtPlugin("com.github.gseitz" %  "sbt-release"           % "1.0.13")
+addSbtPlugin("com.typesafe.play" %  "sbt-plugin"            % "2.8.18")
+addSbtPlugin("net.virtual-void"  %  "sbt-dependency-graph"  % "0.10.0-RC1")
+addSbtPlugin("org.scoverage"     %  "sbt-scoverage"         % "2.0.6")
+addSbtPlugin("org.scalastyle"    %% "scalastyle-sbt-plugin" % "1.0.0")
+addSbtPlugin("net.vonbuchholtz"  %  "sbt-dependency-check"  % "1.1.0")
 
