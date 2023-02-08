@@ -41,7 +41,8 @@ lazy val microservice = (project in file("."))
     integrationTestSettings,
     componentTestSettings,
     allTest,
-    scoverageSettings
+    scoverageSettings,
+    libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
   )
   .settings(majorVersion := 1)
 
