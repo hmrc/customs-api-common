@@ -60,7 +60,7 @@ class DocumentationControllerSpec extends IntegrationTestSpec with MockitoSugar 
 
     val result: Option[Future[Result]] = route(app, FakeRequest("GET", uri))
 
-    result shouldBe 'defined
+    result shouldBe Symbol("defined")
     val resultFuture: Future[Result] = result.get
 
     status(resultFuture) shouldBe OK

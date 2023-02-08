@@ -28,7 +28,7 @@ class ServiceConfigProviderSpec extends IntegrationTestSpec with GuiceOneAppPerS
 
   override implicit lazy val app: Application = configuredApplication
 
-  override def beforeEach: Unit = {
+  override def beforeEach(): Unit = {
     serviceConfigProvider.reset()
   }
 

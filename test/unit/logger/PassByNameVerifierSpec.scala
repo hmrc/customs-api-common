@@ -72,7 +72,7 @@ class PassByNameVerifierSpec extends UnitSpec with MockitoSugar with Matchers {
         val mockFoo = mock[Foo]
         val someClass = new SomeClass
 
-        mockFoo.fooWithClass(someClass, () => ())
+        mockFoo.fooWithClass(someClass, ())
 
         PassByNameVerifier(mockFoo, "fooWithClass")
           .withParamMatcher(ameq(someClass))

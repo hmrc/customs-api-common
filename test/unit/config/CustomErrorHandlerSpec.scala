@@ -96,13 +96,13 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       assertXmlResult(AcceptXmlRequest)
     }
 
-    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptJsonRequest, BAD_REQUEST, ErrorMessage)
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe errorJson("BAD_REQUEST")
     }
 
-    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptXmlRequest, BAD_REQUEST, ErrorMessage)
       status(result) shouldBe BAD_REQUEST
       contentAsXml(result) shouldBe errorXml("BAD_REQUEST")
@@ -131,13 +131,13 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       assertXmlResult(AcceptXmlRequest)
     }
 
-    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptJsonRequest, NOT_FOUND, ErrorMessage)
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe errorJson("NOT_FOUND", "Resource was not found")
     }
 
-    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptXmlRequest, NOT_FOUND, ErrorMessage)
       status(result) shouldBe NOT_FOUND
       contentAsXml(result) shouldBe errorXml("NOT_FOUND", "Resource was not found")
@@ -166,13 +166,13 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       assertXmlResult(AcceptXmlRequest)
     }
 
-    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptJsonRequest, EXPECTATION_FAILED, ErrorMessage)
       status(result) shouldBe EXPECTATION_FAILED
       contentAsJson(result) shouldBe errorJson("BAD_REQUEST")
     }
 
-    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       val result = onClientError(acceptXmlRequest, EXPECTATION_FAILED, ErrorMessage)
       status(result) shouldBe EXPECTATION_FAILED
       contentAsXml(result) shouldBe errorXml("BAD_REQUEST")
@@ -201,7 +201,7 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       assertXmlResult(AcceptXmlRequest)
     }
 
-    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       when(fixture.mockEnvironment.mode) thenReturn Mode.Dev
 
       val result = onServerError(acceptJsonRequest, ServerException)
@@ -209,7 +209,7 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       contentAsJson(result) shouldBe errorJson("INTERNAL_SERVER_ERROR", s"Execution exception[[${ServerException.getClass.getSimpleName}: $ErrorMessage]]")
     }
 
-    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       when(fixture.mockEnvironment.mode) thenReturn Mode.Dev
 
       val result = onServerError(acceptXmlRequest, ServerException)
@@ -240,7 +240,7 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       assertXmlResult(AcceptXmlRequest)
     }
 
-    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertJsonResult(acceptJsonRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       when(fixture.mockEnvironment.mode) thenReturn Mode.Prod
 
       val result = onServerError(acceptJsonRequest, ServerException)
@@ -248,7 +248,7 @@ class CustomErrorHandlerSpec extends UnitSpec with MockitoSugar {
       contentAsJson(result) shouldBe errorJson("INTERNAL_SERVER_ERROR", "Internal server error")
     }
 
-    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture) {
+    def assertXmlResult(acceptXmlRequest: RequestHeader)(implicit fixture: CustomErrorHandlerFixture): Unit = {
       when(fixture.mockEnvironment.mode) thenReturn Mode.Prod
 
       val result = onServerError(acceptXmlRequest, ServerException)

@@ -29,7 +29,7 @@ class DynamicServiceConfigurationSpec extends AnyFeatureSpec with GivenWhenThen 
 
   override implicit lazy val app: Application = configuredApplication
 
-  override def beforeEach: Unit ={
+  override def beforeEach(): Unit ={
     val request = FakeRequest(POST, s"/$validService/configuration").
       withJsonBody(Json.parse("""{"environment": "default"}"""))
 
