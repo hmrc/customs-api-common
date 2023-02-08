@@ -10,7 +10,7 @@ import scala.language.postfixOps
 organization := "uk.gov.hmrc"
 
 name := "customs-api-common"
-scalaVersion := "2.12.13"
+scalaVersion := "2.13.10"
 targetJvm := "jvm-1.8"
 
 Test / packageBin / publishArtifact := true
@@ -44,11 +44,6 @@ lazy val microservice = (project in file("."))
     scoverageSettings
   )
   .settings(majorVersion := 1)
-  .settings(
-    scalacOptions ++= List(
-      "-P:silencer:pathFilters=routes;TestStorage"
-    )
-  )
 
 def onPackageName(rootPackage: String): String => Boolean = {
   testName => testName startsWith rootPackage
@@ -90,7 +85,7 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
 
-val compileDependencies = Seq(bootstrapBackendPlay28, cats, silencerPlugin, silencerLib)
+val compileDependencies = Seq(bootstrapBackendPlay28, cats)
 
 val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark)
 

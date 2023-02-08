@@ -13,7 +13,5 @@ object AppDependencies {
   val mockito                =  "org.mockito"                               %  "mockito-core"              % "4.8.0"    % testScope
   val scalaTestPlusMockito   = "org.scalatestplus"                          %% "mockito-4-2"               % "3.2.11.0" % testScope
   val flexmark               = "com.vladsch.flexmark"                       %  "flexmark-all"              % "0.36.8"   % testScope
-  val silencerPlugin         = compilerPlugin("com.github.ghik" %  "silencer-plugin"           % "1.7.11"   cross CrossVersion.full)
-  val silencerLib            = "com.github.ghik"                            %  "silencer-lib"              % "1.7.11"   % Provided cross CrossVersion.full
 
 }
