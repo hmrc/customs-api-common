@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ trait HttpStatusCodeShortDescriptions {
   val MethodNotAllowedCode = "METHOD_NOT_ALLOWED"
   val NotAcceptableCode = "ACCEPT_HEADER_INVALID"
   val UnsupportedMediaTypeCode = "UNSUPPORTED_MEDIA_TYPE"
+  val PayloadForbidden = "PAYLOAD_FORBIDDEN"
   // 5XX
   val InternalServerErrorCode = "INTERNAL_SERVER_ERROR"
   val NotImplemented = "NOT_IMPLEMENTED"
@@ -105,6 +106,8 @@ object ErrorResponse extends HttpStatusCodeShortDescriptions {
   val ErrorAcceptHeaderInvalid = ErrorResponse(NOT_ACCEPTABLE, NotAcceptableCode, "The accept header is missing or invalid")
 
   val ErrorContentTypeHeaderInvalid = ErrorResponse(UNSUPPORTED_MEDIA_TYPE, UnsupportedMediaTypeCode, "The content type header is missing or invalid")
+
+  val ErrorPayloadForbidden = ErrorResponse(FORBIDDEN, PayloadForbidden, "A firewall rejected the request")
 
   def errorInternalServerError(errorMessage: String): ErrorResponse =
     ErrorResponse(INTERNAL_SERVER_ERROR, InternalServerErrorCode, errorMessage)
