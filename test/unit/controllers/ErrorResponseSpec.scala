@@ -174,6 +174,11 @@ class ErrorResponseSpec extends HttpStatusCodeShortDescriptions with UnitSpec wi
       ErrorResponse.errorInternalServerError("some internal error message") shouldBe
         ErrorResponse(INTERNAL_SERVER_ERROR, InternalServerErrorCode, "some internal error message")
     }
+
+    "create correct payload forbidden error" in {
+      ErrorResponse.ErrorPayloadForbidden shouldBe
+        ErrorResponse(FORBIDDEN, PayloadForbidden, "A firewall rejected the request")
+    }
   }
 
 }
