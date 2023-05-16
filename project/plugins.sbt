@@ -8,10 +8,9 @@ ThisBuild / libraryDependencySchemes ++= Seq(
 )
 
 addSbtPlugin("uk.gov.hmrc"       %  "sbt-auto-build"        % "3.9.0")
-addSbtPlugin("com.github.gseitz" %  "sbt-release"           % "1.0.13")
+addSbtPlugin("com.github.sbt"    %  "sbt-release"           % "1.0.15")
 addSbtPlugin("com.typesafe.play" %  "sbt-plugin"            % "2.8.18")
 addSbtPlugin("net.virtual-void"  %  "sbt-dependency-graph"  % "0.10.0-RC1")
-addSbtPlugin("org.scoverage"     %  "sbt-scoverage"         % "2.0.6")
+addSbtPlugin("org.scoverage"     %  "sbt-scoverage"         % "2.0.7")
 addSbtPlugin("org.scalastyle"    %% "scalastyle-sbt-plugin" % "1.0.0")
-addSbtPlugin("net.vonbuchholtz"  %  "sbt-dependency-check"  % "1.1.0")
-
+addSbtPlugin("com.timushev.sbt"  % "sbt-updates"            % "0.6.3")
