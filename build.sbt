@@ -8,10 +8,7 @@ import uk.gov.hmrc.gitstamp.GitStampPlugin._
 import scala.language.postfixOps
 
 organization := "uk.gov.hmrc"
-
 name := "customs-api-common"
-scalaVersion := "2.13.10"
-targetJvm := "jvm-1.8"
 
 Test / packageBin / publishArtifact := true
 Test / packageSrc / publishArtifact := true
@@ -36,6 +33,8 @@ lazy val microservice = (project in file("."))
   .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
   .configs(testConfig: _*)
   .settings(
+    scalaVersion := "2.13.10",
+    targetJvm := "jvm-11",
     gitStampSettings,
     unitTestSettings,
     integrationTestSettings,
@@ -86,9 +85,9 @@ lazy val scoverageSettings: Seq[Setting[_]] = Seq(
 
 scalastyleConfig := baseDirectory.value / "project" / "scalastyle-config.xml"
 
-val compileDependencies = Seq(bootstrapBackendPlay28, cats)
+val compileDependencies = Seq(bootstrapBackendPlay28, cats, flexmark)
 
-val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark)
+val testDependencies = Seq(pegdown, scalaTestPlusPlay, wireMock, mockito, scalaTestPlusMockito, flexmark, jackson)
 
 Compile / unmanagedResourceDirectories += baseDirectory.value / "public"
 Test / unmanagedResourceDirectories += baseDirectory.value / "test" / "resources"
