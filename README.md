@@ -1,5 +1,7 @@
 # Customs API Common
 
+THIS LIBRARY IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE. PLEASE DO NOT USE IT IN NEW PROJECTS.
+
 [ ![Download](https://api.bintray.com/packages/hmrc/releases/customs-api-common/images/download.svg) ](https://bintray.com/hmrc/releases/customs-api-common/_latestVersion)
 
 
